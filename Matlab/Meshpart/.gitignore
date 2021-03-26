@@ -1,0 +1,6 @@
+# Ignore stuff that's not supported, and sample data
+
+*.mat
+chaco*
+metis*
+mlchaco*

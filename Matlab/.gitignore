@@ -1,0 +1,11 @@
+# Ignore pretty much everything except the Meshpart repository
+
+/Demmel/
+/Graphs/
+/Spielman/
+
+*.ipynb
+*.txt
+*.jld2
+
+startup.m
