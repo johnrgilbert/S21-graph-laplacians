@@ -1,0 +1,9 @@
+# Ignore pretty much everything except the CS292F.jl repository
+
+/AllClassTranscripts/
+/Laplacians.jl/
+/sandbox/
+
+*.ipynb
+*.txt
+*.jld2

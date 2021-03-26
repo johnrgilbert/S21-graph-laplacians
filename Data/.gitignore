@@ -1,0 +1,2 @@
+# Ignore graphs that are too big to archive
+dblp.*

@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem*{pathlemma}{Path Lemma}
+\newtheorem*{etreelemma}{Etree Fill Lemma}
+\newcommand{\m}[1]{{\bf{#1}}}       % for matrices and vectors
+\newcommand{\ones}{\m1}             % vector of all ones
+\newcommand{\zeros}{\m0}            % vector of all zeros
+\newcommand{\diag}{\mbox{diag}}
+\newcommand{\dilation}{\mbox{dilation}}
+\newcommand{\congestion}{\mbox{congestion}}
+\newcommand{\stretchh}{\mbox{stretch}}
+\newcommand{\Reff}{R^{\mbox{\scriptsize eff}}}  % effective resistance
+%\newcommand{\pinv}{^{\mbox{\scriptsize +}}}    % pseudoinverse
+\newcommand{\pinv}{^{\dagger}}                  % pseudoinverse
+\newcommand{\Real}{\mathbb{R}}      % real numbers
+\newcommand{\krylov}{\mathcal{K}}   % Krylov subspace
+
+\topmargin 0in
+\textheight 7.9in
+\oddsidemargin 0pt
+\evensidemargin 0pt
+\textwidth 6.5in
+
+\begin{document}
+
+\title{Index of Notation and Definitions}
+\author{CS 292F: Graph Laplacians and Spectra}
+\date{Version of March 29, 2021}
+\maketitle
+
+There is a lot of variation in terminology and notation in
+the field of Laplacian matrix computation and spectral graph 
+theory.  
+Indeed, even ``Laplacian matrix'' is defined differently by
+different authors!
+
+This list gives the versions of notation, terminology, and definitions 
+that we will use in CS 292F.
+I mostly follow the conventions of Dan Spielman's notes, 
+though I prefer not to use greek letters for vectors.
+I will keep adding to this list during the quarter.
+
+\begin{enumerate}
+
+\item
+Unless otherwise stated, a {\em graph} $G = (V,E)$ is always 
+an undirected graph whose $n$ vertices are the integers 
+$1$ through $n$, with no multiple edges or loops.
+
+\item
+The {\em degree} of a vertex is the number of edges incident on it, 
+or equivalently (because we don't allow multiple edges or loops)
+the number of its neighboring vertices.
+
+\item 
+A graph is said to be {\em regular} if every vertex has the same degree.
+
+\item
+A graph is said to be {\em connected} if, for every choice of two
+vertices $i$ and $j$, there is a {\em path} of edges from $i$ to $j$.
+The {\em connected components} of a graph are its maximal connected
+subgraphs.
+
+\item
+$K_n$ is the {\em complete graph}, which has $n$ vertices and all $n(n-1)/2$ possible edges.
+
+\item
+$P_n$ is the {\em path graph}, which has $n$ vertices and $n-1$ edges in a single path.
+
+\item
+$S_n$ is the {\em star graph}, which has $n$ vertices, one with degree $n-1$ and 
+$n-1$ with degree 1.
+
+\item
+$H_k$ is the {\em hypercube graph}, which has $n=2^k$ vertices, all of degree $k$.
+Vertices $i$ and $j$ have an edge between them if $i$ and $j$ differ by a power of 2.
+Equivalently, we can identify each vertex with a subset of $\{1,\ldots,k\}$,
+with edges to just those subsets formed by adding or deleting one element.
+
+\item
+$G_e$ or $G_{(i,j)}$ is the graph with $n$ vertices and only one edge $e = (i,j)$.
+
+\item
+We will write a {\em vector} as a lower-case latin letter, 
+possibly with a subscript, like $x$ or $w_2$.  
+We often think of an $n$-vector as a set of labels for the
+$n$ vertices of a graph; 
+in that case element $i$ of vector $x$ is written as $x(i)$,
+and we may write $x\in\Real^V$ instead of $x\in\Real^n$.
+In linear algebraic expressions, vectors are column vectors.
+
+\item
+Two special vectors are $\zeros$, the vector of all zeros,
+and $\ones$, the vector of all ones.
+
+\item
+If $i$ is a vertex then $\ones_i$~is the 
+{\em characteristic vector} of~$i$, which
+is zero except for $\ones_i(i)=1$.
+Similarly if $S$~is a set of vertices, 
+then $\ones_S$ is the vector that is equal to one
+on the elements of~$S$ and zero elsewhere.
+
+\item
+If $d$ is an $n$-vector, $\diag(d)$ is the $n$-by-$n$ diagonal 
+matrix with the elements of $d$ on the diagonal.
+If $A$ is any $n$-by-$n$ matrix, $\diag(A)$ is the $n$-vector
+of the diagonal elements of $A$.
+
+\item\label{lap}
+The {\em Laplacian} of graph $G$ is the $n$-by-$n$ matrix $L$
+whose diagonal element $L(i,i)$ is the degree of vertex $i$, 
+and whose off-diagonal element $L(i,j)$ is~$-1$ if $(i,j) \in E$ 
+and $0$ if $(i,j) \notin E$.
+This matrix, which we (and Spielman) just call the Laplacian,
+is sometimes called the {\em combinatorial Laplacian} to 
+distinguish it from the normalized Laplacian 
+(to be defined later).
+% below~(\ref{nlap}).
+Note that $ L\ones = \zeros$.
+
+\item
+$L_e$ or $L_{(i,j)}$ is the $n$-by-$n$ Laplacian matrix
+of the graph with $n$ vertices and only one edge $e = (i,j)$.
+This matrix has only four nonzero elements, two 1's on the
+diagonal and two $-1$'s in positions $(i,j)$ and $(j,i)$;
+thus 
+$$L_{(i,j)}=(\ones_i-\ones_j)(\ones_i-\ones_j)^T.$$
+The Laplacian of any graph $G=(V,E)$ is the sum of the Laplacians
+of its edges,
+$$L_G = \sum_{e\in E} L_e.$$
+
+\item
+The {\em Laplacian quadratic form} (or just LQF) is $x^TLx$,
+where $L$ is a particular graph's Laplacian and $x$ is a variable $n$-vector.
+Its value for a particular vector $x$ is 
+$$x^TLx = \sum_{(i,j)\in E}(x(i)-x(j))^2.$$
+
+\end{enumerate}
+
+\end{document}
+

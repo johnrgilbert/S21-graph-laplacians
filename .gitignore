@@ -1,0 +1,22 @@
+# Ignore Emacs and Vim backup files
+*~
+\#*
+*.swp
+
+# Ignore LaTeX work files
+*.aux
+*.log
+
+# Ignore MacOS directory display format files 
+.DS_Store
+
+# Ignore subdirectories I don't want students to see
+/111
+/2014
+/Grades/
+/Homework/
+/Images/
+/Matlab/
+/OrganizationAndSyllabus/
+/Projects/
+/SpielmanNotes/
