@@ -10,7 +10,7 @@
 # Ignore MacOS directory display format files 
 .DS_Store
 
-# Ignore subdirectories I don't want students to see
+# Ignore subdirectories not to be archived on GitHub
 /111
 /2014
 /Grades/
