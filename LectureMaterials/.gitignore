@@ -1,0 +1,5 @@
+# Ignore zoom recordings, which are too big for GitHub.
+
+*.m3u
+*.m4a
+*.mp4

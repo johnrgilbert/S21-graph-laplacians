@@ -1,11 +1,15 @@
 # Ignore pretty much everything except the Meshpart repository
 
+/AllClassTranscripts/
 /Demmel/
 /Graphs/
 /Spielman/
+/sandbox/
 
 *.ipynb
 *.txt
 *.jld2
+*.png
+*.fig
 
 startup.m
