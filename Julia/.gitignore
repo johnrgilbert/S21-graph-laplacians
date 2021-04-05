@@ -1,9 +1,8 @@
-# Ignore pretty much everything except the CS292F.jl repository
+# Ignore stuff I don't want to archive
 
 /AllClassTranscripts/
 /Laplacians.jl/
 /sandbox/
 
-*.ipynb
 *.txt
 *.jld2

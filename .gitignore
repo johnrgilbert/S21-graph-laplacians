@@ -1,7 +1,8 @@
-# Ignore Emacs and Vim backup files
+# Ignore Emacs, Vim, and Jupyter backup files
 *~
 \#*
 *.swp
+.ipynb_checkpoints/
 
 # Ignore LaTeX work files
 *.aux
@@ -14,8 +15,7 @@
 /111
 /2014
 /Grades/
-/Homework/
 /Images/
-/Notes/
 /OrganizationAndSyllabus/
 /Projects/
+/Stuff/
