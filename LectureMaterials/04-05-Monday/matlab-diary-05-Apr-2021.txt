@@ -1,0 +1,144 @@
+Matlab diary from CS 292F, Monday, April 05, 2021
+
+This is /Users/gilbert/Documents/S21-graph-laplacians/Matlab/startup.m
+Using diary file diary-05-Apr-2021.txt
+
+load airfoil
+whos
+  Name              Size               Bytes  Class     Attributes
+
+  L              4253x4253            495328  double    sparse    
+  graphname         1x7                   14  char                
+  v              4253x3               102072  double              
+  xy             4253x2                68048  double              
+
+gplotg(L,xy)
+v(1:10,:)
+
+ans =
+
+   -0.0154    0.0071   -0.0054
+   -0.0163    0.0058   -0.0040
+   -0.0172    0.0038   -0.0020
+   -0.0148   -0.0170    0.0085
+   -0.0182   -0.0017    0.0023
+   -0.0117    0.0105   -0.0101
+   -0.0113   -0.0229    0.0089
+   -0.0175   -0.0088    0.0061
+   -0.0095   -0.0250    0.0087
+   -0.0179    0.0010    0.0004
+
+v'*v
+
+ans =
+
+    1.0000   -0.0000    0.0000
+   -0.0000    1.0000   -0.0000
+    0.0000   -0.0000    1.0000
+
+format long
+v'*v
+
+ans =
+
+   1.000000003787012  -0.000000001437925   0.000000001594706
+  -0.000000001437925   0.999999997107881  -0.000000004540623
+   0.000000001594706  -0.000000004540623   0.999999996908967
+
+format short
+v'*L*v
+
+ans =
+
+    0.0018    0.0000    0.0000
+    0.0000    0.0044   -0.0000
+    0.0000   -0.0000    0.0062
+
+gplotg(L,v)
+
+clear
+load clusters
+whos
+  Name            Size            Bytes  Class     Attributes
+
+  L              50x50             9400  double    sparse    
+  graphname       1x8                16  char                
+  v              50x3              1200  double              
+  xy             50x2               800  double              
+
+spy(L)
+gplotg(L,xy)
+gplotg(L,v(:,1:2))
+clf
+v'*L*v
+
+ans =
+
+    0.8595   -0.0000    0.0000
+   -0.0000    0.9956   -0.0000
+    0.0000   -0.0000    4.2471
+
+v(:,1)'
+
+ans =
+  Columns 1 through 12
+   -0.1861    0.0537    0.1924   -0.1894    0.0770   -0.1738   -0.1589    0.1871    0.0743   -0.1570    0.1436    0.1442
+  Columns 13 through 24
+   -0.1783    0.0764    0.0773    0.1840    0.0832    0.1405   -0.1539    0.1368    0.0623   -0.1857    0.0821    0.0662
+  Columns 25 through 36
+    0.0482   -0.1389    0.1537    0.0547    0.0788   -0.1812    0.0562    0.1656   -0.1632    0.1666   -0.1845    0.0751
+  Columns 37 through 48
+    0.1699   -0.1858    0.1369   -0.1847   -0.1530   -0.1506    0.1390   -0.1580    0.0630    0.1696   -0.1194    0.0738
+  Columns 49 through 50
+   -0.1515   -0.1781
+
+[ignore, p] = sort(v(:,1));
+p'
+
+ans =
+  Columns 1 through 20
+     4     1    38    22    40    35    30    13    50     6    33     7    44    10    19    41    49    42    26    47
+  Columns 21 through 40
+    25     2    28    31    21    45    24    48     9    36    14     5    15    29    23    17    20    39    43    18
+  Columns 41 through 50
+    11    12    27    32    34    46    37    16     8     3
+
+spy(L(p,p))
+shg
+clear
+load dodec
+whos
+  Name            Size            Bytes  Class     Attributes
+
+  L              20x20             1448  double    sparse    
+  graphname       1x5                10  char                
+  v              20x3               480  double              
+
+gplotg(L,v)
+v'*v
+
+ans =
+
+    1.0000    0.0000    0.0000
+    0.0000    1.0000    0.0000
+    0.0000    0.0000    1.0000
+
+v'*L*v
+
+ans =
+
+    0.7639    0.0000    0.0000
+    0.0000    0.7639    0.0000
+    0.0000    0.0000    0.7639
+
+clear
+load pgp
+whos
+  Name               Size                 Bytes  Class     Attributes
+
+  L              10680x10680            1034440  double    sparse    
+  graphname          1x3                      6  char                
+  v              10680x3                 256320  double              
+
+spy(L)
+gplotg(L,v)
