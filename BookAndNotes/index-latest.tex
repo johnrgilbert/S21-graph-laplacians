@@ -12,11 +12,11 @@
 \newcommand{\ones}{\m1}             % vector of all ones
 \newcommand{\zeros}{\m0}            % vector of all zeros
 \newcommand{\diag}{\mbox{diag}}
+\newcommand{\Diag}{\mbox{Diag}}
 \newcommand{\dilation}{\mbox{dilation}}
 \newcommand{\congestion}{\mbox{congestion}}
 \newcommand{\stretchh}{\mbox{stretch}}
 \newcommand{\Reff}{R^{\mbox{\scriptsize eff}}}  % effective resistance
-%\newcommand{\pinv}{^{\mbox{\scriptsize +}}}    % pseudoinverse
 \newcommand{\pinv}{^{\dagger}}                  % pseudoinverse
 \newcommand{\Real}{\mathbb{R}}      % real numbers
 \newcommand{\krylov}{\mathcal{K}}   % Krylov subspace
@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of March 29, 2021}
+\date{Version of April 5, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -108,7 +108,7 @@ then $\ones_S$ is the vector that is equal to one
 on the elements of~$S$ and zero elsewhere.
 
 \item
-If $d$ is an $n$-vector, $\diag(d)$ is the $n$-by-$n$ diagonal 
+If $d$ is an $n$-vector, $\Diag(d)$ is the $n$-by-$n$ diagonal 
 matrix with the elements of $d$ on the diagonal.
 If $A$ is any $n$-by-$n$ matrix, $\diag(A)$ is the $n$-vector
 of the diagonal elements of $A$.
@@ -136,13 +136,103 @@ The Laplacian of any graph $G=(V,E)$ is the sum of the Laplacians
 of its edges,
 $$L_G = \sum_{e\in E} L_e.$$
 
-\item
+\item\label{LQF}
 The {\em Laplacian quadratic form} (or just LQF) is $x^TLx$,
 where $L$ is a particular graph's Laplacian and $x$ is a variable $n$-vector.
 Its value for a particular vector $x$ is 
 $$x^TLx = \sum_{(i,j)\in E}(x(i)-x(j))^2.$$
 
+\item\label{eig}
+If $Aw=\lambda w$ for any square matrix~$A$, nonzero vector~$w$, and scalar~$\lambda$, 
+then $\lambda$ is an {\em eigenvalue} of~$A$ and $w$~is an {\em eigenvector}
+associated with~$\lambda$.
+
+\item
+If $A$ is square and $B$~is nonsingular, then the eigenvalues of $BAB^{-1}$ are the
+same as those of~$A$, 
+and the eigenvectors of $BAB^{-1}$ are $B$ times the eigenvectors of~$A$.
+
+\item
+Every Laplacian $L$ is {\em positive semidefinite}, 
+which (along with symmetry) implies that its $n$ eigenvalues are nonnegative and real.
+Zero is an eigenvalue of $L$ with multiplicity
+equal to the number of connected components of the graph $G$.  
+Therefore,
+if $G$ is connected, we have $0 = \lambda_1 < \lambda_2 \leq \cdots \leq \lambda_n$.
+In that case the eigenvector $w_1$ is the constant vector $\ones/\sqrt n$.
+
+\item
+The {\em Fiedler value} of a graph is $\lambda_2$, its second-smallest eigenvalue,
+and the {\em Fiedler vector} is $w_2$, the associated eigenvector.
+The Fiedler value of a graph is also called its {\em algebraic connectivity}.
+Note that $\lambda_2=0$ iff the graph is not connected.
+
+\item
+A square matrix $Q$ is {\em orthogonal} if $Q^TQ=I$, that is, its inverse
+is its transpose.  
+As vectors, the columns of $Q$ have unit length and are pairwise perpendicular; 
+the same is true of the rows of $Q$.
+
+\item\label{symeig}
+If the $n$-by-$n$ matrix $A$ is symmetric, then it possesses $n$ real eigenvalues
+$\lambda_1\leq\lambda_2\leq\cdots\leq\lambda_n$ (possibly including duplicates) 
+associated with $n$ mutually orthogonal unit-length eigenvectors
+$w_1, w_2, \ldots, w_n$.  If $W$ is the matrix $[w_1\; w_2\; \ldots\; w_n]$
+and $\Lambda$ is the matrix $\Diag(\lambda_1,\ldots,\lambda_n)$
+then we can summarize this as $AW = W\Lambda$ and $W^TW=I$.
+We also have $A=W\Lambda W^T$, whence
+$$A = \sum_{i=1}^n \lambda_i w_iw_i^T.$$
+
+\item
+If symmetric $A$ and its eigenvalues and eigenvectors are as in~(\ref{symeig}), 
+any vector $x$ can be written as a linear combination of eigenvectors,
+$$x = \sum_{i=1}^n \alpha_i w_i,$$
+where $\alpha_i = w_i^Tx.$  
+Multiplication by $A$ acts termwise on such a sum:
+$$A^k x = \sum_{i=1}^n \alpha_i\lambda_i^k w_i.$$
+
+\item
+If symmetric $A$ and its eigenvalues and eigenvectors are as in~(\ref{symeig}), 
+the {\em pseudoinverse} of $A$ is
+$$A\pinv = \sum_{\lambda_i\ne 0} \frac{1}{\lambda_i} w_iw_i^T,$$
+where the sum is taken over the nonzero eigenvalues of $A$.
+If $A$ is nonsingular, $A\pinv=A^{-1}$.
+If $x$ is orthogonal to the null space of $A$ 
+(i.e.\ $x^Tw_i=0$ whenever $\lambda_i=0$), then
+$$A\pinv A x = AA\pinv x = x.$$
+
+\item
+The {\em positive semidefinite square root} of a positive semidefinite matrix~$A$
+with eigenvalues and eigenvectors as in~(\ref{symeig}) is the matrix
+$$A^{1/2} = \sum_{i=1}^n \lambda_i^{1/2} w_iw_i^T.$$
+We write the psd square root of~$A\pinv$ as 
+$$A^{\dagger/2} = \sum_{\lambda_i\ne 0} \lambda_i^{-1/2} w_iw_i^T.$$
+
+\item
+The {\em Rayleigh quotient} of a nonzero vector $x$ and a matrix $A$ is
+$$\frac{x^TAx}{x^Tx}.$$
+If $Ax=\lambda x$, then the Rayleigh quotient of $x$ and $A$ is $\lambda$.
+
+\item\label{RQT}{\bf Rayleigh quotient theorem}.
+The eigenvectors of a symmetric matrix $A$ are critical points of its
+Rayleigh quotient (considered as a real-valued function of an $n$-vector).
+Specifically, 
+$$\lambda_k = \min_{x\perp w_1,\ldots,w_{k-1}} \frac{x^TAx}{x^Tx}
+            = \max_{x\perp w_{k+1},\ldots,w_n} \frac{x^TAx}{x^Tx},$$
+and the extreme values are attained at $x = w_k$.
+In particular, therefore, for a Laplacian $L$ the Fiedler value is
+$$\lambda_2 = \min_{x\perp\ones} \frac{x^TAx}{x^Tx},$$
+attained at the Fiedler vector $w_2$.
+
+\item\label{CFT}{\bf Courant-Fischer theorem}
+(a stronger version of the Rayleigh quotient theorem).
+The eigenvalues $\lambda_1\leq\cdots\leq\lambda_n$ of a symmetric matrix $A$ 
+are characterized by
+$$\lambda_k = \max_{\dim \mathbb{S}=n-k+1}\;\min_{x\in \mathbb{S}}\frac{x^TAx}{x^Tx}
+            = \min_{\dim \mathbb{S}=k}\;\max_{x\in \mathbb{S}}\frac{x^TAx}{x^Tx},$$
+where $\mathbb{S}$ ranges over subspaces of $\Real^n$.
+The extreme values are attained at $x = w_k$.
+
 \end{enumerate}
 
 \end{document}
-
