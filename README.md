@@ -2,6 +2,8 @@
 
 ##### Course materials for UCSB CS 292F.300 Spring 2021: Graph Laplacians and Spectral Graph Theory
 
+The main course web site is on [GauchoSpace](https://gauchospace.ucsb.edu/courses/course/view.php?id=112387).
+
 This repository will be updated throughout the quarter with course materials. You should probably just clone it to your own computer, and do a "git pull" every now and then to keep it up to date. Current contents are:
 
 - [**BookAndNotes**](BookAndNotes/): This directory contains the textbook, which is Dan Spielman's "Spectral and Algebraic Graph Theory". It also contains a growing tex/pdf document called "Index of Notation and Definitions", which has lots of goodies in it and will be updated regularly to keep up with lectures.
