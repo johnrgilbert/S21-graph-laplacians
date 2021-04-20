@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+
+\newcommand{\m}[1]{{\bf{#1}}}       % for matrices and vectors
+\newcommand{\ones}{\m1}             % vector of all ones
+\newcommand{\zeros}{\m0}            % vector of all zeros
+\newcommand{\tr}{^{\sf T}}          % transpose
+\newcommand{\pinv}{^{\dagger}}      % pseudoinverse
+
+
+\topmargin -.5in
+\textheight 8.5in
+\oddsidemargin 0pt
+\evensidemargin 0pt
+\textwidth 6.5in
+
+%-------------------------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------------------------
+
+\title{Homework 2}
+\author{CS 292F : Laplacian Matrices and Spectra : Spring 2021}
+
+\date{Out: Tuesday, April 20. Due: Monday, May 3.}
+\maketitle
+
+{\bf Homework policy.} 
+Please turn in all your homework through GradeScope as a single .pdf file.
+For computational problems, turn in listings of any code you wrote; 
+any sample output and plots; and an interactive session transcript as
+a Matlab diary file, Jupyter notebook .pdf, etc.
+
+You are allowed to discuss the problems in groups of up to three 
+(you and up to two others), but you must write up the solutions 
+on your own. If you do work with anyone, you must acknowledge your
+collaborators. Also, you must cite any references you use other than
+the textbook and your class notes.
+
+You are forbidden from searching the web in any way to find answers
+to these problems. However, you are welcome to search the web for
+advice on using Matlab, Julia, and other software tools. Stackoverflow
+is great.
+
+\par\bigskip
+{\bf Problem 1. Complete bipartite graph.}
+Let $m$ and $n$ be integers.  
+Let $K_{m,n}$ be the {\em complete bipartite graph} on $m+n$ vertices. 
+(Think of this graph as having $m$ red vertices, $n$ blue vertices,
+and all $mn$ possible edges joining a red vertex to a blue vertex.)
+What are the eigenvalues of the Laplacian of $K_{m,n}$?
+Prove your answer correct.
+(Note: You can do this by pure thinking. If it were me, I would do it
+by computing the eigenvalues for a few examples in Matlab/Julia/Python, 
+guessing the pattern, and proving my answer correct.)
+
+\par\bigskip
+{\bf Problem 2. Semidefinite ordering and eigenvalues.} 
+We noted in class that if $G\preceq H$ for graphs $G$ and $H$
+(or indeed for any two symmetric matrices),
+then $\lambda_i(G)\le\lambda_i(H)$ for every $i$.
+Show that the converse of this statement is false, 
+by finding unweighted graphs $G$ and $H$, both with 
+$n$~vertices, for which $\lambda_i(G)\le\lambda_i(H)$ for $1\le i\le n$
+but $G\not\preceq H$.
+(Hint: I did this by first finding a very simple example consisting
+of two small symmetric matrices that were not graph Laplacians,
+and then figuring out how to make the same thing happen with an
+unweighted Laplacian matrix.)
+
+\par\bigskip
+{\bf Problem 3. Inverse and pseudoinverse.}
+For this problem, $A$ is an $n$-by-$n$ symmetric matrix with eigenvalues
+$\lambda_1\leq\lambda_2\leq\cdots\leq\lambda_n$ 
+(possibly including duplicates) 
+associated with mutually orthogonal unit-length eigenvectors
+$w_1, w_2, \ldots, w_n$.  
+As we know, we can write $A$ as a sum over eigenvalues as
+$$A = \sum_{i=1}^n \lambda_i w_iw_i^T.$$
+
+\par\medskip
+{\bf 3.1.} 
+Prove that, if $A$ is nonsingular, its inverse can be written as
+$$A^{-1} = \sum_{i=1}^n \frac{1}{\lambda_i} w_iw_i^T.$$
+
+\par\medskip
+{\bf 3.2.} 
+Whether $A$ is singular or not, its {\em pseudoinverse} is defined as
+$$A\pinv = \sum_{\lambda_i\ne 0} \frac{1}{\lambda_i} w_iw_i^T,$$
+where the sum is taken over the nonzero eigenvalues of $A$.
+If $A$ is nonsingular, then $A\pinv=A^{-1}$.
+Prove that if $A\succeq 0$ then $A\pinv\succeq 0$.
+
+\par\medskip
+{\bf 3.3.}
+Prove that if $x$~is orthogonal to the null space of~$A$
+(that is, $x^Tw_i=0$ whenever $\lambda_i=0$), then
+$$A\pinv A x = AA\pinv x = x.$$
+
+\par\medskip
+{\bf 3.4}
+Prove that if $A\succeq B\succeq 0$ and 
+$\mbox{null}(A)=\mbox{null}(B)=\mbox{span}(\ones)$,
+then $A\pinv \preceq B\pinv$.
+(Hint: Take $\ones^T x=0$, let $y=A\pinv x-B\pinv x$, and look at~$y^TBy$.)
+
+\par\bigskip
+{\bf Problem 4. Kronecker products and product graphs.}
+If $A$ is an $m$-by-$m$ symmetric matrix and $B$ is an $n$-by-$n$ symmetric matrix,
+their {\em Kronecker product} is the $mn$-by-$mn$ matrix that
+can be written in block form as
+$$
+A\otimes B = \begin{bmatrix}
+  a_{11} B & \cdots & a_{1m} B \\
+  \vdots   & \ddots & \vdots   \\
+  a_{m1} B & \cdots & a_{mm} B
+\end{bmatrix}.
+$$
+In words, $A\otimes B$ is built by replacing each entry of $A$ with a complete copy of $B$
+multiplied by that entry.
+(The Kronecker product is defined for nonsymmetric and non-square matrices too,
+but we will stick to the square symmetric case here.)
+
+\par\medskip
+{\bf 4.1.}
+Prove that if $Av=\lambda v$ and $Bw=\nu w$, then $\lambda\nu$ is an eigenvalue 
+of $A\otimes B$. What is the corresponding eigenvector (as a function of $v$ and $w$)?
+
+\par\medskip
+{\bf 4.2.} 
+In class, I defined the product of two graphs $G\times H$, 
+using the same notation and definition as Section 6.3 of Spielman.
+Spielman mentions that if $G$ has $m$ vertices and $H$ has $n$ vertices, then
+$$
+L_{G \times H} = (L_G \otimes I_n) + (I_m \otimes L_H).
+$$
+I actually prefer using this equality as the definition of the graph product,
+so I won't ask you to prove it from Spielman's definition.
+Use this equality (not Spielman's definition) to prove
+that if $\lambda$~is an eigenvalue of $G$ (that is, of $L_G$) and
+$\nu$ is an eigenvalue of $H$, then $\lambda+\nu$ is an eigenvalue of~$G\times H$.
+
+\end{document}
