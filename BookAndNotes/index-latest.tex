@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of April 5, 2021}
+\date{Version of April 7, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -108,6 +108,15 @@ then $\ones_S$ is the vector that is equal to one
 on the elements of~$S$ and zero elsewhere.
 
 \item
+If $x$ and $y$ are vectors of the same dimension, 
+$$x^Ty = y^Tx = \sum_{i=0}^{n}x(i)y(i)$$
+is their inner product (or dot product).
+Thus $\ones^T\!x$ is the sum of the elements of $x$,
+and $x^Tx$ is the square of the 2-norm (Euclidean length) of $x$.
+If $x^Ty=0$, we call $x$ and $y$ {\em orthogonal}, 
+and they are in fact perpendicular as vectors in $\Real^n$.
+
+\item
 If $d$ is an $n$-vector, $\Diag(d)$ is the $n$-by-$n$ diagonal 
 matrix with the elements of $d$ on the diagonal.
 If $A$ is any $n$-by-$n$ matrix, $\diag(A)$ is the $n$-vector
@@ -120,9 +129,7 @@ and whose off-diagonal element $L(i,j)$ is~$-1$ if $(i,j) \in E$
 and $0$ if $(i,j) \notin E$.
 This matrix, which we (and Spielman) just call the Laplacian,
 is sometimes called the {\em combinatorial Laplacian} to 
-distinguish it from the normalized Laplacian 
-(to be defined later).
-% below~(\ref{nlap}).
+distinguish it from the normalized Laplacian below~(\ref{nlap}).
 Note that $ L\ones = \zeros$.
 
 \item
@@ -141,6 +148,15 @@ The {\em Laplacian quadratic form} (or just LQF) is $x^TLx$,
 where $L$ is a particular graph's Laplacian and $x$ is a variable $n$-vector.
 Its value for a particular vector $x$ is 
 $$x^TLx = \sum_{(i,j)\in E}(x(i)-x(j))^2.$$
+
+\item
+A {\em cut vector} is a vector each of whose elements is $+1$ or $-1$.
+We can think of a cut vector~$x$ as representing a {\em cut} that partitions
+the vertices of graph into two sets $S = \{\,i : x(i) = 1\,\}$
+and $V-S = \{\,i : x(i) = -1\,\}$.
+The LQF evaluated at a cut vector is easily seen to be four times the number 
+of edges that cross the cut:
+$$ x^TLx = 4\cdot|\{\,(i,j)\in E : i\in S \wedge j\in V-S\,\}|.$$
 
 \item\label{eig}
 If $Aw=\lambda w$ for any square matrix~$A$, nonzero vector~$w$, and scalar~$\lambda$, 
@@ -221,7 +237,7 @@ $$\lambda_k = \min_{x\perp w_1,\ldots,w_{k-1}} \frac{x^TAx}{x^Tx}
             = \max_{x\perp w_{k+1},\ldots,w_n} \frac{x^TAx}{x^Tx},$$
 and the extreme values are attained at $x = w_k$.
 In particular, therefore, for a Laplacian $L$ the Fiedler value is
-$$\lambda_2 = \min_{x\perp\ones} \frac{x^TAx}{x^Tx},$$
+$$\lambda_2 = \min_{\ones^T\!x=0} \frac{x^TAx}{x^Tx},$$
 attained at the Fiedler vector $w_2$.
 
 \item\label{CFT}{\bf Courant-Fischer theorem}
@@ -232,6 +248,145 @@ $$\lambda_k = \max_{\dim \mathbb{S}=n-k+1}\;\min_{x\in \mathbb{S}}\frac{x^TAx}{x
             = \min_{\dim \mathbb{S}=k}\;\max_{x\in \mathbb{S}}\frac{x^TAx}{x^Tx},$$
 where $\mathbb{S}$ ranges over subspaces of $\Real^n$.
 The extreme values are attained at $x = w_k$.
+
+\item
+A {\em test vector for $\lambda_2$} is an $n$-vector that is
+orthogonal to $\ones$.  By the Raleigh quotient theorem,
+if $v$ is any test vector then $\lambda_2 \leq v^TLv/v^Tv$.
+Note that any vector $x$ can be converted to a test vector 
+$v = x - (\ones^T\!x/n) \ones$; in words, subtracting off
+the mean of any vector orthogonalizes it against the constant
+vector.
+
+\item
+The {\em boundary} of a set $S\subseteq V$ of vertices, written $\partial S$,
+is the set of edges with just one endpoint in $S$. Formally,
+$\partial S = \{\,(i,j)\in E : i \in S \wedge j \in V-S\,\}$.
+The number of edges in $\partial S$ is $|\partial S|$.
+
+\item\label{isop}
+The {\em isoperimetric ratio} of a set $S\subseteq V$ of vertices,
+written $\theta(S)$, is the ratio
+$$\theta(S) = \frac{|\partial S|}{|S|}.$$
+This is one sort of ``surface-to-volume ratio''; 
+see the definition of conductance~(\ref{cond}) 
+for another.
+
+\item\label{isopnum}
+The {\em isoperimetric ratio} of a graph $G$,
+written $\theta_G$, is the smallest isoperimetric ratio over all 
+sets with at most half the vertices,
+$$\theta_G = \min_{|S|\leq n/2}\theta(S).$$
+Note that $\theta_G=0$ if and only if $G$ is not connected.
+
+\item\label{isopthm} {\bf Isoperimetric theorem}.
+For any set $S$ of vertices, 
+$$\theta(S) \geq \lambda_2(1-|S|/n).$$
+It follows that the isoperimetric ratio of the graph is bounded 
+in terms of the Fiedler value,
+$$\theta_G \geq \lambda_2/2.$$
+This says that the larger $\lambda_2$ is, the larger the surface-to-volume
+ratio of any relatively small set of vertices must be.
+
+\item\label{cond}
+The {\em conductance} of a set $S\subseteq V$ of vertices,
+written $\phi(S)$, is the ratio 
+$$\phi(S) = \frac{|\partial S|}{\min(d(S),d(V-S))},$$
+where $d(S)$ is the sum of the degrees of the vertices in $S$.
+This is another sort of ``surface-to-volume ratio'';
+isoperimetric number~(\ref{isopnum}) measures volume just by counting vertices, 
+while conductance measures volume by counting vertices weighted by their degrees.
+(``Conductance'' has a different meaning in resistive networks, as we'll see later.)
+%; see~(\ref{resistive}) below.)
+
+\item
+The {\em conductance} of a graph $G$,
+written $\phi_G$, is the smallest conductance of any nonempty 
+proper subset of vertices,
+$$\phi_G = \min_{S\subset V}\phi(S).$$
+This is sometimes called the ``Cheeger constant''
+of the graph, but definitions are particularly
+variable here and we'll stick to this one.
+Note that $\phi_G=0$ iff $G$ is not connected.
+(``Conductance'' has a different meaning in resistive networks, as we'll see later.)
+%; see~(\ref{resistive}) below.)
+
+\item\label{nlap}
+The {\em normalized Laplacian} of graph~$G$ is 
+the $n$-by-$n$ matrix~$N$
+whose diagonal element $N(i,i)$ is equal to 1,
+and whose off-diagonal element $N(i,j)$ 
+is~$-1/\sqrt{d(i)d(j)}$, 
+where we define $d$ to be the vector of vertex degrees of~$G$.
+Another way to say it is that the normalized Laplacian is 
+the (ordinary) Laplacian with rows and columns scaled symmetrically 
+to make the diagonal elements equal to~1. 
+If $D=\diag(d)$ is the diagonal matrix of degrees, 
+then 
+$$N = D^{-1/2}LD^{-1/2}.$$
+Some authors, including notably Fan Chung in her 
+wonderful book {\em Spectral Graph Theory}, 
+use the name ``Laplacian'' for this matrix~$N$
+instead of for our~$L$.
+
+\item\label{nlapeig}
+The normalized Laplacian $N$ is symmetric and 
+positive semidefinite, and like the Laplacian
+it has 0 as an eigenvalue with multiplicity
+equal to the number of connected components
+of~$G$.  In general however $N$'s eigenvalues
+and eigenvectors are different from $L$'s.
+We write $0=\nu_1\le\nu_2\le\cdots\le\nu_n$
+for the eigenvalues of $N$.
+The eigenvector corresponding to $\nu_1$ is
+not the constant vector, but the vector $d^{1/2}$
+of the square roots of the vertex degrees:
+$$Nd^{1/2} = D^{-1/2}LD^{-1/2}d^{1/2} = D^{-1/2}L\ones = D^{-1/2}\zeros = \zeros.$$
+
+\item\label{nlaprq}
+The Rayleigh quotient for $N_G$, whose critical points determine the eigenvalues,
+is related to a ``generalized Rayleigh quotient'' for the Laplacian $L_G$.
+Specifically, we have
+$$\frac{x^TN_Gx}{x^Tx} = \frac{y^TL_Gy}{y^TDy},$$
+where $D=\Diag(d)$ is the diagonal matrix of vertex degrees 
+and $y=D^{-1/2}x$.
+Thus the eigenvalues of $N_Gx=\nu x$ come from
+the generalized eigenvalue problem $L_Gy=\nu Dy.$
+
+\item\label{gershgorin}{\bf Gershgorin's theorem}.
+If $A$ is any square matrix (real or complex), its $n$~eigenvalues are all contained
+in the union of the $n$~disks $D_1,\ldots,D_n$ in the complex plane defined by
+$$D_i = \{\alpha : |\alpha-A(i,i)| \leq \sum_{j\neq i}|A(i,j)|\}.$$
+This implies, for example, that the largest eigenvalue $\lambda_n$ of a Laplacian
+is at most twice the maximum vertex degree.
+
+\item
+It follows from Gershgorin's theorem~(\ref{gershgorin}) that
+the eigenvalues of the normalized Laplacian $N$ are always bounded by~0 and~2,
+$$0 = \nu_1 \leq \nu_2 \leq \cdots \leq \nu_n \leq 2.$$
+
+\item\label{cheeger} {\bf Cheeger's inequalities}.
+The normalized Laplacian can be used to give both 
+upper and lower bounds on the conductance,
+$$\nu_2/2 \leq \phi_G \leq \sqrt{2\nu_2}.$$
+Equivalently,
+$$\phi_G^2/2 \leq \nu_2 \leq 2\phi_G.$$
+The upper bound on $\nu_2$ is analogous to the
+isoperimetric inequality~(\ref{isopthm}).
+The lower bound on $\nu_2$ is Cheeger's inequality,
+one of the most significant theorems of spectral
+graph theory.
+
+\item\label{csi} {\bf Cauchy-Schwarz inequality}.
+Just for reference, because it comes up in several of
+the proofs we're looking at.  
+If $x$ and $y$ are $n$-vectors, then 
+$$|x^Ty| \leq \|x\|\,\|y\|.$$
+Equivalently,
+$$\Big(\sum_i x(i)y(i)\Big)^2 \leq 
+\Big(\sum_i x(i)^2\Big)
+\Big(\sum_i y(i)^2\Big).$$
+
 
 \end{enumerate}
 
