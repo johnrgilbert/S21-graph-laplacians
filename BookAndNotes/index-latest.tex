@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of April 7, 2021}
+\date{Version of April 22, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -63,7 +63,7 @@ A graph is said to be {\em regular} if every vertex has the same degree.
 
 \item
 A graph is said to be {\em connected} if, for every choice of two
-vertices $i$ and $j$, there is a {\em path} of edges from $i$ to $j$.
+vertices $a$ and~$b$, there is a {\em path} of edges from $a$ to~$b$.
 The {\em connected components} of a graph are its maximal connected
 subgraphs.
 
@@ -84,7 +84,7 @@ Equivalently, we can identify each vertex with a subset of $\{1,\ldots,k\}$,
 with edges to just those subsets formed by adding or deleting one element.
 
 \item
-$G_e$ or $G_{(i,j)}$ is the graph with $n$ vertices and only one edge $e = (i,j)$.
+$G_e$ or $G_{(a,b)}$ is the graph with $n$ vertices and only one edge $e = (a,b)$.
 
 \item
 We will write a {\em vector} as a lower-case latin letter, 
@@ -100,9 +100,9 @@ Two special vectors are $\zeros$, the vector of all zeros,
 and $\ones$, the vector of all ones.
 
 \item
-If $i$ is a vertex then $\ones_i$~is the 
-{\em characteristic vector} of~$i$, which
-is zero except for $\ones_i(i)=1$.
+If $a$ is a vertex then $\ones_a$~is the 
+{\em characteristic vector} of~$a$, which
+is zero except for $\ones_a(a)=1$.
 Similarly if $S$~is a set of vertices, 
 then $\ones_S$ is the vector that is equal to one
 on the elements of~$S$ and zero elsewhere.
@@ -124,21 +124,21 @@ of the diagonal elements of $A$.
 
 \item\label{lap}
 The {\em Laplacian} of graph $G$ is the $n$-by-$n$ matrix $L$
-whose diagonal element $L(i,i)$ is the degree of vertex $i$, 
-and whose off-diagonal element $L(i,j)$ is~$-1$ if $(i,j) \in E$ 
-and $0$ if $(i,j) \notin E$.
+whose diagonal element $L(a,a)$ is the degree of vertex $a$, 
+and whose off-diagonal element $L(a,b)$ is~$-1$ if $(a,b) \in E$ 
+and $0$ if $(a,b) \notin E$.
 This matrix, which we (and Spielman) just call the Laplacian,
 is sometimes called the {\em combinatorial Laplacian} to 
 distinguish it from the normalized Laplacian below~(\ref{nlap}).
 Note that $ L\ones = \zeros$.
 
 \item
-$L_e$ or $L_{(i,j)}$ is the $n$-by-$n$ Laplacian matrix
-of the graph with $n$ vertices and only one edge $e = (i,j)$.
+$L_e$ or $L_{(a,b)}$ is the $n$-by-$n$ Laplacian matrix
+of the graph with $n$ vertices and only one edge $e = (a,b)$.
 This matrix has only four nonzero elements, two 1's on the
-diagonal and two $-1$'s in positions $(i,j)$ and $(j,i)$;
+diagonal and two $-1$'s in positions $(a,b)$ and $(b,a)$;
 thus 
-$$L_{(i,j)}=(\ones_i-\ones_j)(\ones_i-\ones_j)^T.$$
+$$L_{(a,b)}=(\ones_a-\ones_b)(\ones_a-\ones_b)^T.$$
 The Laplacian of any graph $G=(V,E)$ is the sum of the Laplacians
 of its edges,
 $$L_G = \sum_{e\in E} L_e.$$
@@ -147,16 +147,16 @@ $$L_G = \sum_{e\in E} L_e.$$
 The {\em Laplacian quadratic form} (or just LQF) is $x^TLx$,
 where $L$ is a particular graph's Laplacian and $x$ is a variable $n$-vector.
 Its value for a particular vector $x$ is 
-$$x^TLx = \sum_{(i,j)\in E}(x(i)-x(j))^2.$$
+$$x^TLx = \sum_{(a,b)\in E}(x(a)-x(b))^2.$$
 
 \item
 A {\em cut vector} is a vector each of whose elements is $+1$ or $-1$.
 We can think of a cut vector~$x$ as representing a {\em cut} that partitions
-the vertices of graph into two sets $S = \{\,i : x(i) = 1\,\}$
-and $V-S = \{\,i : x(i) = -1\,\}$.
+the vertices of graph into two sets $S = \{\,a : x(a) = 1\,\}$
+and $V-S = \{\,a : x(a) = -1\,\}$.
 The LQF evaluated at a cut vector is easily seen to be four times the number 
 of edges that cross the cut:
-$$ x^TLx = 4\cdot|\{\,(i,j)\in E : i\in S \wedge j\in V-S\,\}|.$$
+$$ x^TLx = 4\cdot|\{\,(a,b)\in E : a\in S \wedge b\in V-S\,\}|.$$
 
 \item\label{eig}
 If $Aw=\lambda w$ for any square matrix~$A$, nonzero vector~$w$, and scalar~$\lambda$, 
@@ -241,7 +241,7 @@ $$\lambda_2 = \min_{\ones^T\!x=0} \frac{x^TAx}{x^Tx},$$
 attained at the Fiedler vector $w_2$.
 
 \item\label{CFT}{\bf Courant-Fischer theorem}
-(a stronger version of the Rayleigh quotient theorem).
+(another version of the Rayleigh quotient theorem).
 The eigenvalues $\lambda_1\leq\cdots\leq\lambda_n$ of a symmetric matrix $A$ 
 are characterized by
 $$\lambda_k = \max_{\dim \mathbb{S}=n-k+1}\;\min_{x\in \mathbb{S}}\frac{x^TAx}{x^Tx}
@@ -261,7 +261,7 @@ vector.
 \item
 The {\em boundary} of a set $S\subseteq V$ of vertices, written $\partial S$,
 is the set of edges with just one endpoint in $S$. Formally,
-$\partial S = \{\,(i,j)\in E : i \in S \wedge j \in V-S\,\}$.
+$\partial S = \{\,(a,b)\in E : a \in S \wedge b \in V-S\,\}$.
 The number of edges in $\partial S$ is $|\partial S|$.
 
 \item\label{isop}
@@ -296,6 +296,9 @@ where $d(S)$ is the sum of the degrees of the vertices in $S$.
 This is another sort of ``surface-to-volume ratio'';
 isoperimetric number~(\ref{isopnum}) measures volume just by counting vertices, 
 while conductance measures volume by counting vertices weighted by their degrees.
+In class we defined conductance for unweighted graphs,
+but the definition extends to weighted graphs~(\ref{wgraph}) with
+a suitable interpretation of~$d(S)$.
 (``Conductance'' has a different meaning in resistive networks, as we'll see later.)
 %; see~(\ref{resistive}) below.)
 
@@ -314,9 +317,9 @@ Note that $\phi_G=0$ iff $G$ is not connected.
 \item\label{nlap}
 The {\em normalized Laplacian} of graph~$G$ is 
 the $n$-by-$n$ matrix~$N$
-whose diagonal element $N(i,i)$ is equal to 1,
-and whose off-diagonal element $N(i,j)$ 
-is~$-1/\sqrt{d(i)d(j)}$, 
+whose diagonal element $N(a,a)$ is equal to 1,
+and whose off-diagonal element $N(a,b)$ 
+is~$-1/\sqrt{d(a)d(b)}$, 
 where we define $d$ to be the vector of vertex degrees of~$G$.
 Another way to say it is that the normalized Laplacian is 
 the (ordinary) Laplacian with rows and columns scaled symmetrically 
@@ -330,34 +333,35 @@ use the name ``Laplacian'' for this matrix~$N$
 instead of for our~$L$.
 
 \item\label{nlapeig}
-The normalized Laplacian $N$ is symmetric and 
+The normalized Laplacian~$N$ is symmetric and 
 positive semidefinite, and like the Laplacian
 it has 0 as an eigenvalue with multiplicity
 equal to the number of connected components
 of~$G$.  In general however $N$'s eigenvalues
 and eigenvectors are different from $L$'s.
 We write $0=\nu_1\le\nu_2\le\cdots\le\nu_n$
-for the eigenvalues of $N$.
-The eigenvector corresponding to $\nu_1$ is
-not the constant vector, but the vector $d^{1/2}$
+for the eigenvalues of~$N$.
+The eigenvector corresponding to~$\nu_1$ is
+not the constant vector, but the vector~$d^{1/2}$
 of the square roots of the vertex degrees:
 $$Nd^{1/2} = D^{-1/2}LD^{-1/2}d^{1/2} = D^{-1/2}L\ones = D^{-1/2}\zeros = \zeros.$$
 
 \item\label{nlaprq}
-The Rayleigh quotient for $N_G$, whose critical points determine the eigenvalues,
-is related to a ``generalized Rayleigh quotient'' for the Laplacian $L_G$.
+The Rayleigh quotient for the normalized Laplacian~$N$, 
+whose critical points determine the eigenvalues,
+is related to a ``generalized Rayleigh quotient'' for the Laplacian~$L$.
 Specifically, we have
-$$\frac{x^TN_Gx}{x^Tx} = \frac{y^TL_Gy}{y^TDy},$$
+$$\frac{x^TNx}{x^Tx} = \frac{y^TLy}{y^TDy},$$
 where $D=\Diag(d)$ is the diagonal matrix of vertex degrees 
 and $y=D^{-1/2}x$.
-Thus the eigenvalues of $N_Gx=\nu x$ come from
-the generalized eigenvalue problem $L_Gy=\nu Dy.$
+Thus the eigenvalues of $Nx=\nu x$ come from
+the generalized eigenvalue problem $Ly=\nu Dy.$
 
 \item\label{gershgorin}{\bf Gershgorin's theorem}.
 If $A$ is any square matrix (real or complex), its $n$~eigenvalues are all contained
 in the union of the $n$~disks $D_1,\ldots,D_n$ in the complex plane defined by
-$$D_i = \{\alpha : |\alpha-A(i,i)| \leq \sum_{j\neq i}|A(i,j)|\}.$$
-This implies, for example, that the largest eigenvalue $\lambda_n$ of a Laplacian
+$$D_a = \{\alpha : |\alpha-A(a,a)| \leq \sum_{b\neq a}|A(a,b)|\}.$$
+This implies, for example, that the largest eigenvalue~$\lambda_n$ of a Laplacian
 is at most twice the maximum vertex degree.
 
 \item
@@ -371,22 +375,100 @@ upper and lower bounds on the conductance,
 $$\nu_2/2 \leq \phi_G \leq \sqrt{2\nu_2}.$$
 Equivalently,
 $$\phi_G^2/2 \leq \nu_2 \leq 2\phi_G.$$
-The upper bound on $\nu_2$ is analogous to the
+The upper bound on~$\nu_2$ is analogous to the
 isoperimetric inequality~(\ref{isopthm}).
-The lower bound on $\nu_2$ is Cheeger's inequality,
+The lower bound on~$\nu_2$ is Cheeger's inequality,
 one of the most significant theorems of spectral
 graph theory.
+In class we stated (and partly proved) these
+inequalities for unweighted graphs, but they 
+hold for weighted graphs~(\ref{wgraph}) as well; 
+the Spielman book proves the weighted version.
 
 \item\label{csi} {\bf Cauchy-Schwarz inequality}.
 Just for reference, because it comes up in several of
 the proofs we're looking at.  
-If $x$ and $y$ are $n$-vectors, then 
+If $x$ and~$y$ are $n$-vectors, then 
 $$|x^Ty| \leq \|x\|\,\|y\|.$$
 Equivalently,
 $$\Big(\sum_i x(i)y(i)\Big)^2 \leq 
 \Big(\sum_i x(i)^2\Big)
 \Big(\sum_i y(i)^2\Big).$$
 
+\item\label{wgraph}
+A {\em weighted graph} is an undirected graph that comes 
+with {\em positive} weights on the edges, which we write~$c(e)$ or~$c(a,b)$.
+We take $c(a,b)=0$ if $(a,b)$ is not an edge; 
+weights on edges are required to be strictly positive.
+Note that $c(a,b)=c(b,a)$.
+We can think of all graphs as weighted graphs;
+an ``unweighted'' graph just has edge weights all equal to~1.
+
+\item
+In a weighted graph, we often interpret~$d(a)$, for a vertex~$a$,
+not as the number of incident edges but as the sum of the weights
+of the incident edges:
+$$d(a) = \sum_{b \neq a}c(a,b),$$
+and we often define the diagonal matrix $D = \Diag(d)$ as the matrix
+whose entries are those sums.
+We also (as before) write~$d(S)$, where $S$~is a set of vertices, 
+to mean $\sum_{a \in S}d(a)$.
+
+\item\label{wlap}
+The {\em Laplacian matrix of a weighted graph}
+is the $n$-by-$n$ matrix~$L$ whose off-diagonal
+element~$L(a,b)$ is~$-c(a,b)$ if $(a,b) \in E$ and $0$ if $(a,b) \notin E$,
+and whose diagonal element $L(a,a) = d(a) = \sum_{b \neq a}c(a,b)$ is chosen to
+make the row sums zero.
+Like the Laplacian of an unweighted graph, we have $L\ones=\zeros$, 
+and indeed 0~is an eigenvalue of~$L$ with multiplicity equal to the 
+number of connected components of the graph.
+For an unweighted graph, this is equivalent to our previous definition,
+with all edge weights equal to~1.
+
+\item\label{wnorm}
+The {\em normalized Laplacian matrix of a weighted graph}
+is the matrix~$N$
+whose diagonal element~$N(a,a)$ is equal to~1,
+and which for each edge~$(a,b)$ has symmetric off-diagonal elements 
+$N(a,b) = N(b,a) = -c(a,b)/\sqrt{d(a)d(b)}$.
+Here $d(a)$ is the sum of the weights of edges incident on~$a$.
+If $D = \Diag(d)$ is the diagonal matrix of those sums
+and $L$ is the Laplacian of the weighted graph, then
+$$N = D^{-1/2}LD^{-1/2}.$$
+Like the normalized Laplacian of an unweighted graph, 
+we have $Nd^{1/2}=\zeros$, 
+and 0 remains an eigenvalue of~$N$ with multiplicity equal to the 
+number of connected components of the graph.
+Again this is equivalent to our previous definition for an unweighted graph
+if all edge weights are equal to~1.
+
+\item {\bf Multiple of a graph}.
+If $G$ is a (weighted) graph and $\alpha>0$ is a constant, $\alpha G$~is the
+graph whose edge weights are all multiplied by~$\alpha$.
+The ordinary Laplacian of~$\alpha G$ is $\alpha$~times the Laplacian of~$G$,
+$$L_{\alpha G} = \alpha L_G.$$ 
+On the other hand, the normalized Laplacian of $\alpha G$ is the same as the
+normalized Laplacian of~$G$, 
+$$N_{\alpha G} = N_G,$$ 
+since the normalization wipes out the factor of~$\alpha$.
+
+\item {\bf Semidefinite ordering}.
+If $A$ is a matrix, $A\succeq0$ means that $A$ is symmetric and positive semidefinite.
+Thus $L\succeq 0$ for any Laplacian~$L$.
+If $A$ and~$B$ are matrices, $A\succeq B$ means $A-B\succeq 0$.
+If $G$ and~$H$ are graphs or weighted graphs, $G\succeq H$ means $L_G\succeq L_H$
+(note that we are using the ordinary, un-normalized Laplacian here).
+Then $G\succeq H$ if and only if $x^TL_Gx \geq x^TL_Hx$ for all vectors~$x$.
+For matrices $A \succeq 0$ and $B \succeq 0$,
+$A\succeq B$ implies $\lambda_k(A) \geq \lambda_k(B)$ for all~$k$,
+but the converse is false.
+Also, $A \succeq B$ implies $B\pinv \succeq A\pinv$.
+
+\item {\bf Graph approximation}.
+For any constant $\alpha\geq 1$, (weighted) graph~$H$ is an {\em $\alpha$-approximation} 
+of (weighted)~graph $G$ if $\alpha H \succeq G \succeq H/\alpha$.
+This definition actually applies to all symmetric matrices, not just graph Laplacians.
 
 \end{enumerate}
 
