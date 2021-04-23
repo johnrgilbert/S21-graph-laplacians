@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of April 22, 2021}
+\date{Version of April 23, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -319,7 +319,7 @@ The {\em normalized Laplacian} of graph~$G$ is
 the $n$-by-$n$ matrix~$N$
 whose diagonal element $N(a,a)$ is equal to 1,
 and whose off-diagonal element $N(a,b)$ 
-is~$-1/\sqrt{d(a)d(b)}$, 
+is~$-1/\sqrt{d(a)d(b)}$ if $(a,b) \in E$ and $0$ if $(a,b) \notin E$,
 where we define $d$ to be the vector of vertex degrees of~$G$.
 Another way to say it is that the normalized Laplacian is 
 the (ordinary) Laplacian with rows and columns scaled symmetrically 
