@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of April 23, 2021}
+\date{Version of April 30, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -122,8 +122,8 @@ matrix with the elements of $d$ on the diagonal.
 If $A$ is any $n$-by-$n$ matrix, $\diag(A)$ is the $n$-vector
 of the diagonal elements of $A$.
 
-\item\label{lap}
-The {\em Laplacian} of graph $G$ is the $n$-by-$n$ matrix $L$
+\item\label{lap}{\bf Laplacian matrix}.
+The Laplacian of graph $G$ is the $n$-by-$n$ matrix $L$
 whose diagonal element $L(a,a)$ is the degree of vertex $a$, 
 and whose off-diagonal element $L(a,b)$ is~$-1$ if $(a,b) \in E$ 
 and $0$ if $(a,b) \notin E$.
@@ -143,22 +143,23 @@ The Laplacian of any graph $G=(V,E)$ is the sum of the Laplacians
 of its edges,
 $$L_G = \sum_{e\in E} L_e.$$
 
-\item\label{LQF}
+\item\label{LQF}{\bf Laplacian quadratic form}.
 The {\em Laplacian quadratic form} (or just LQF) is $x^TLx$,
 where $L$ is a particular graph's Laplacian and $x$ is a variable $n$-vector.
 Its value for a particular vector $x$ is 
 $$x^TLx = \sum_{(a,b)\in E}(x(a)-x(b))^2.$$
 
-\item
-A {\em cut vector} is a vector each of whose elements is $+1$ or $-1$.
+\item{\bf Cut vector}.
+A cut vector is a vector each of whose elements is $+1$ or $-1$.
 We can think of a cut vector~$x$ as representing a {\em cut} that partitions
 the vertices of graph into two sets $S = \{\,a : x(a) = 1\,\}$
-and $V-S = \{\,a : x(a) = -1\,\}$.
+and $V-S = \{\,a : x(a) = -1\,\}$;
+then $x = \ones_S-\ones_{V-S}$.
 The LQF evaluated at a cut vector is easily seen to be four times the number 
 of edges that cross the cut:
 $$ x^TLx = 4\cdot|\{\,(a,b)\in E : a\in S \wedge b\in V-S\,\}|.$$
 
-\item\label{eig}
+\item\label{eig}{\bf Eigenvalues and eigenvectors}.
 If $Aw=\lambda w$ for any square matrix~$A$, nonzero vector~$w$, and scalar~$\lambda$, 
 then $\lambda$ is an {\em eigenvalue} of~$A$ and $w$~is an {\em eigenvector}
 associated with~$\lambda$.
@@ -177,19 +178,20 @@ Therefore,
 if $G$ is connected, we have $0 = \lambda_1 < \lambda_2 \leq \cdots \leq \lambda_n$.
 In that case the eigenvector $w_1$ is the constant vector $\ones/\sqrt n$.
 
-\item
-The {\em Fiedler value} of a graph is $\lambda_2$, its second-smallest eigenvalue,
-and the {\em Fiedler vector} is $w_2$, the associated eigenvector.
+\item{\bf Fiedler value and Fiedler vector}.
+The Fiedler value of a graph is $\lambda_2$, its second-smallest eigenvalue,
+and the Fiedler vector is $w_2$, the associated eigenvector.
 The Fiedler value of a graph is also called its {\em algebraic connectivity}.
 Note that $\lambda_2=0$ iff the graph is not connected.
 
-\item
-A square matrix $Q$ is {\em orthogonal} if $Q^TQ=I$, that is, its inverse
+\item{\bf Orthogonal matrix}.
+A square matrix $Q$ is orthogonal if $Q^TQ=I$, that is, its inverse
 is its transpose.  
-As vectors, the columns of $Q$ have unit length and are pairwise perpendicular; 
+As vectors, 
+the columns of $Q$ have unit length and are pairwise perpendicular; 
 the same is true of the rows of $Q$.
 
-\item\label{symeig}
+\item\label{symeig}{\bf Symmetric eigenvalue factorization}.
 If the $n$-by-$n$ matrix $A$ is symmetric, then it possesses $n$ real eigenvalues
 $\lambda_1\leq\lambda_2\leq\cdots\leq\lambda_n$ (possibly including duplicates) 
 associated with $n$ mutually orthogonal unit-length eigenvectors
@@ -199,7 +201,7 @@ then we can summarize this as $AW = W\Lambda$ and $W^TW=I$.
 We also have $A=W\Lambda W^T$, whence
 $$A = \sum_{i=1}^n \lambda_i w_iw_i^T.$$
 
-\item
+\item{\bf Eigenvector basis}.
 If symmetric $A$ and its eigenvalues and eigenvectors are as in~(\ref{symeig}), 
 any vector $x$ can be written as a linear combination of eigenvectors,
 $$x = \sum_{i=1}^n \alpha_i w_i,$$
@@ -207,9 +209,10 @@ where $\alpha_i = w_i^Tx.$
 Multiplication by $A$ acts termwise on such a sum:
 $$A^k x = \sum_{i=1}^n \alpha_i\lambda_i^k w_i.$$
 
-\item
-If symmetric $A$ and its eigenvalues and eigenvectors are as in~(\ref{symeig}), 
-the {\em pseudoinverse} of $A$ is
+\item{\bf Pseudoinverse}.
+If $A$ and its eigenvalues and eigenvectors 
+are as in~(\ref{symeig}), 
+the pseudoinverse of~$A$ is
 $$A\pinv = \sum_{\lambda_i\ne 0} \frac{1}{\lambda_i} w_iw_i^T,$$
 where the sum is taken over the nonzero eigenvalues of $A$.
 If $A$ is nonsingular, $A\pinv=A^{-1}$.
@@ -217,15 +220,15 @@ If $x$ is orthogonal to the null space of $A$
 (i.e.\ $x^Tw_i=0$ whenever $\lambda_i=0$), then
 $$A\pinv A x = AA\pinv x = x.$$
 
-\item
-The {\em positive semidefinite square root} of a positive semidefinite matrix~$A$
+\item{\bf Square root}.
+The positive semidefinite square root of a positive semidefinite matrix~$A$
 with eigenvalues and eigenvectors as in~(\ref{symeig}) is the matrix
 $$A^{1/2} = \sum_{i=1}^n \lambda_i^{1/2} w_iw_i^T.$$
 We write the psd square root of~$A\pinv$ as 
 $$A^{\dagger/2} = \sum_{\lambda_i\ne 0} \lambda_i^{-1/2} w_iw_i^T.$$
 
-\item
-The {\em Rayleigh quotient} of a nonzero vector $x$ and a matrix $A$ is
+\item{\bf Rayleigh quotient}.
+The Rayleigh quotient of a nonzero vector $x$ and a matrix $A$ is
 $$\frac{x^TAx}{x^Tx}.$$
 If $Ax=\lambda x$, then the Rayleigh quotient of $x$ and $A$ is $\lambda$.
 
@@ -249,8 +252,8 @@ $$\lambda_k = \max_{\dim \mathbb{S}=n-k+1}\;\min_{x\in \mathbb{S}}\frac{x^TAx}{x
 where $\mathbb{S}$ ranges over subspaces of $\Real^n$.
 The extreme values are attained at $x = w_k$.
 
-\item
-A {\em test vector for $\lambda_2$} is an $n$-vector that is
+\item{\bf Test vector}.
+A test vector for $\lambda_2$ is an $n$-vector that is
 orthogonal to $\ones$.  By the Raleigh quotient theorem,
 if $v$ is any test vector then $\lambda_2 \leq v^TLv/v^Tv$.
 Note that any vector $x$ can be converted to a test vector 
@@ -264,16 +267,14 @@ is the set of edges with just one endpoint in $S$. Formally,
 $\partial S = \{\,(a,b)\in E : a \in S \wedge b \in V-S\,\}$.
 The number of edges in $\partial S$ is $|\partial S|$.
 
-\item\label{isop}
-The {\em isoperimetric ratio} of a set $S\subseteq V$ of vertices,
+\item\label{isop}{\bf Isoperimetric ratio}.
+The isoperimetric ratio of a set $S\subseteq V$ of vertices,
 written $\theta(S)$, is the ratio
 $$\theta(S) = \frac{|\partial S|}{|S|}.$$
 This is one sort of ``surface-to-volume ratio''; 
 see the definition of conductance~(\ref{cond}) 
 for another.
-
-\item\label{isopnum}
-The {\em isoperimetric ratio} of a graph $G$,
+The isoperimetric ratio of a graph $G$,
 written $\theta_G$, is the smallest isoperimetric ratio over all 
 sets with at most half the vertices,
 $$\theta_G = \min_{|S|\leq n/2}\theta(S).$$
@@ -288,34 +289,27 @@ $$\theta_G \geq \lambda_2/2.$$
 This says that the larger $\lambda_2$ is, the larger the surface-to-volume
 ratio of any relatively small set of vertices must be.
 
-\item\label{cond}
-The {\em conductance} of a set $S\subseteq V$ of vertices,
+\item\label{cond}{\bf Conductance}.
+The conductance of a set $S\subseteq V$ of vertices,
 written $\phi(S)$, is the ratio 
 $$\phi(S) = \frac{|\partial S|}{\min(d(S),d(V-S))},$$
 where $d(S)$ is the sum of the degrees of the vertices in $S$.
 This is another sort of ``surface-to-volume ratio'';
-isoperimetric number~(\ref{isopnum}) measures volume just by counting vertices, 
+isoperimetric number~(\ref{isop}) measures volume just by counting vertices, 
 while conductance measures volume by counting vertices weighted by their degrees.
 In class we defined conductance for unweighted graphs,
 but the definition extends to weighted graphs~(\ref{wgraph}) with
 a suitable interpretation of~$d(S)$.
-(``Conductance'' has a different meaning in resistive networks, as we'll see later.)
-%; see~(\ref{resistive}) below.)
-
-\item
-The {\em conductance} of a graph $G$,
+The conductance of a graph $G$,
 written $\phi_G$, is the smallest conductance of any nonempty 
 proper subset of vertices,
 $$\phi_G = \min_{S\subset V}\phi(S).$$
-This is sometimes called the ``Cheeger constant''
-of the graph, but definitions are particularly
-variable here and we'll stick to this one.
 Note that $\phi_G=0$ iff $G$ is not connected.
 (``Conductance'' has a different meaning in resistive networks, as we'll see later.)
 %; see~(\ref{resistive}) below.)
 
-\item\label{nlap}
-The {\em normalized Laplacian} of graph~$G$ is 
+\item\label{nlap}{\bf Normalized Laplacian}.
+The normalized Laplacian of graph~$G$ is 
 the $n$-by-$n$ matrix~$N$
 whose diagonal element $N(a,a)$ is equal to 1,
 and whose off-diagonal element $N(a,b)$ 
@@ -395,8 +389,8 @@ $$\Big(\sum_i x(i)y(i)\Big)^2 \leq
 \Big(\sum_i x(i)^2\Big)
 \Big(\sum_i y(i)^2\Big).$$
 
-\item\label{wgraph}
-A {\em weighted graph} is an undirected graph that comes 
+\item\label{wgraph}{\bf Weighted graph}.
+A weighted graph is an undirected graph that comes 
 with {\em positive} weights on the edges, which we write~$c(e)$ or~$c(a,b)$.
 We take $c(a,b)=0$ if $(a,b)$ is not an edge; 
 weights on edges are required to be strictly positive.
@@ -414,21 +408,20 @@ whose entries are those sums.
 We also (as before) write~$d(S)$, where $S$~is a set of vertices, 
 to mean $\sum_{a \in S}d(a)$.
 
-\item\label{wlap}
-The {\em Laplacian matrix of a weighted graph}
+\item\label{wlap}{\bf Weighted Laplacian}.
+The Laplacian matrix of a weighted graph
 is the $n$-by-$n$ matrix~$L$ whose off-diagonal
 element~$L(a,b)$ is~$-c(a,b)$ if $(a,b) \in E$ and $0$ if $(a,b) \notin E$,
-and whose diagonal element $L(a,a) = d(a) = \sum_{b \neq a}c(a,b)$ is chosen to
-make the row sums zero.
+and whose diagonal element $L(a,a) = d(a) = \sum_{b \neq a}c(a,b)$ 
+is chosen to make the row sums zero.
 Like the Laplacian of an unweighted graph, we have $L\ones=\zeros$, 
 and indeed 0~is an eigenvalue of~$L$ with multiplicity equal to the 
 number of connected components of the graph.
 For an unweighted graph, this is equivalent to our previous definition,
 with all edge weights equal to~1.
 
-\item\label{wnorm}
-The {\em normalized Laplacian matrix of a weighted graph}
-is the matrix~$N$
+\item\label{wnorm}{\bf Normalized weighted Laplacian}.
+The normalized Laplacian matrix of a weighted graph is the matrix~$N$
 whose diagonal element~$N(a,a)$ is equal to~1,
 and which for each edge~$(a,b)$ has symmetric off-diagonal elements 
 $N(a,b) = N(b,a) = -c(a,b)/\sqrt{d(a)d(b)}$.
@@ -469,6 +462,99 @@ Also, $A \succeq B$ implies $B\pinv \succeq A\pinv$.
 For any constant $\alpha\geq 1$, (weighted) graph~$H$ is an {\em $\alpha$-approximation} 
 of (weighted)~graph $G$ if $\alpha H \succeq G \succeq H/\alpha$.
 This definition actually applies to all symmetric matrices, not just graph Laplacians.
+
+\item{\bf Krylov subspace}.
+The $t$-dimensional Krylov subspace based on a square matrix~$A$ 
+and a vector~$b$ is 
+$$\krylov_t(A,b) = \mbox{span}(b,Ab,A^2b,\ldots,A^{t-1}b).$$
+
+\item\label{QR}{\bf Symmetric $QR$ algorithm}.
+This algorithm computes all the eigenvalues and all the eigenvectors
+of a symmetric matrix~$A$ in two phases. 
+The first phase applies a sequence of $n-2$ elementary orthogonal 
+transformations called {\em Householder reflections} to~$A$,
+symmetrically from the left and right.
+The reflections are chosen to zero out each column in turn 
+below its first subdiagonal element (and, because of symmetry,
+each row after its first superdiagonal element), 
+giving the factorization
+$$Q^TAQ = T,$$
+where $Q$ is orthogonal and $T$ is tridiagonal (and symmetric).
+The second phase is iterative, and converts $T$ to a diagonal matrix
+by applying a sequence of elementary orthogonal transformations called
+{\em Givens rotations} to reduce the magnitude of the off-diagonal
+elements by a process called ``bulge-chasing'' that is 
+reminiscent of squeezing the last bit of toothpaste from a tube.
+Iterations continue until the off-diagonal elements are sufficiently small
+to be neglible.
+This gives the factorization
+$$V^TTV = \Lambda,$$
+where $V$ is orthogonal and $\Lambda$ is diagonal.
+Taking $W=QV$, we then have the eigenvalue factorization
+$$A = W\Lambda W^T.$$
+The first phase does $O(n^3)$ work, and we can think of the second phase
+(modulo details about convergence and floating-point arithmetic)
+as doing $O(n^2)$ work. 
+This is the workhorse method for computing all eigenvalues and eigenvectors
+of dense matrices, 
+but it can't be used for very large sparse matrices
+both because of the $n^3$~work and because the first phase 
+needs $n^2$~memory to store intermediate fill.
+See the Demmel or Trefethen/Bau textbooks for details.
+
+\item{\bf Lanczos iteration}.
+The Lanczos iteration computes the matrices $Q$ and $T$ above,
+one column at a time.
+It begins with an arbitrary (typically random)
+unit vector $q_1$ as the first column
+of $Q$, and at step $t$ it computes the vector $v=Aq_t$,
+orthogonalizes $v$ against columns $q_t$ and $q_{t-1}$,
+and scales the orthogonalized vector to unit length.
+Because $T$ is symmetric and tridiagonal, 
+the resulting vector is actually orthogonal to all columns $q_1$ 
+through $q_t$, and it becomes column $q_{t+1}$.
+The coefficients of the orthogonalization become the entries of $T$.
+See the class notes (or Demmel or Trefethen/Bau) for the details
+of the formulas.
+The Lanczos iteration can be viewed as building orthogonal bases 
+for the Krylov subspaces $K_t(A,q_1)$.
+Unlike the $QR$ algorithm~(\ref{QR}),
+the only thing Lanczos needs to do with
+the matrix $A$ is to multiply it by vectors, 
+which is useful when $A$ is sparse.
+
+\item{\bf Lanczos algorithm}.
+The Lanczos algorithm computes approximations
+to some of the eigenvalues of~$A$. 
+It first performs some number~$t$ (typically much less than~$n$)
+of Lanczos iterations to get an $n$-by-$t$ matrix~$Q_t$ 
+with orthonormal columns (i.e.\ $Q_t^TQ_t = I_t$) and a 
+$t$-by-$t$ symmetric tridiagonal matrix~$T_t = Q_t^TAQ_t$.
+It then uses the second (``toothpaste-squeezing'') phase of
+the symmetric $QR$ algorithm~(\ref{QR}) to diagonalize
+$T_t=V_t\Theta V_t^T$, where $V_t$ is $t$-by-$t$ and orthogonal,
+and $\Theta$ is diagonal.
+Then the numbers $\theta_1,\theta_2\ldots,\theta_t$ on the diagonal
+of~$\Theta$ (the eigenvalues of~$T_k$) are {\em Ritz values} for~$A$,
+and the columns of~$Q_kV_k$ are the corresponding {\em Ritz vectors}.
+(There is a lot of numerical-algorithm engineering involved in a
+practical implementation of Lanczos; 
+see Demmel or the 1994 Grimes/Lewis/Simon SIMAX paper for details.)
+
+\item{\bf Ritz values}.
+The Ritz values of a matrix approximate some of its eigenvalues.
+The whole story is rather involved; see Demmel for more of it.
+In exact real arithmetic, if $A$ has no multiple eigenvalues, 
+the Ritz values after $t=n$~steps are equal to the $n$~eigenvalues 
+of~$A$. 
+Multiple (or very close) eigenvalues are tricky; 
+block versions of Lanczos can be used here.
+In exact arithmetic, at stage~$t$, every Ritz value
+is guaranteed to be within~$\beta_t$ of some eigenvalue,
+where $\beta_t$ is the subdiagonal element in column~$t$ of~$T$.
+Generally speaking, the extreme Ritz values 
+(those closest to $+\infty$ and~$-\infty$)
+tend to converge quickly to the extreme eigenvalues.
 
 \end{enumerate}
 
