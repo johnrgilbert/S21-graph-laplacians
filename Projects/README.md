@@ -26,8 +26,8 @@ Final project reports will be due on Thursday, June 10.
   generator) to create several groups of test graphs, each
   group having "similar" structure and a wide range of
   sizes.  For each group determine how the Fiedler value
-  scales with $$n$$.  Can you create a group to match a 
-  desired scaling (e.g., $$O(1/n)$$ or $$O(\sqrt n\,)$$ or ....)?
+  scales with n.  Can you create a group to match a 
+  desired scaling (e.g., O(1/n) or O(sqrt(n) or ....)?
 
 - Use a big parallel computer (or the cloud) to compute
   Fiedler values and Fiedler vectors for the largest
@@ -47,7 +47,7 @@ Final project reports will be due on Thursday, June 10.
 
 - Compare both the quality of results and the computational
   cost of spectral clustering on some test problems, using 
-  each of the three matrices $$L$$, $$N$$, and $$A$$.
+  each of the three matrices L, N, and A.
 
 
 ### Examples of survey projects:
