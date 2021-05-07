@@ -10,7 +10,7 @@ Survey papers must be solo.
 Some suggested topics are below.  You are of course free to come up 
 with other topics yourself.  Please submit a one-page project proposal
 (via GradeScope) to let me know what your topic will be, and who if 
-anyone you will be working with, by Friday, May 14.
+anyone you will be working with, by Monday, May 17.
 
 Final project reports will be due on Thursday, June 10.  
 
