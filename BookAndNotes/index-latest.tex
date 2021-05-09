@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of April 30, 2021}
+\date{Version of May 8, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -555,6 +555,204 @@ where $\beta_t$ is the subdiagonal element in column~$t$ of~$T$.
 Generally speaking, the extreme Ritz values 
 (those closest to $+\infty$ and~$-\infty$)
 tend to converge quickly to the extreme eigenvalues.
+
+\item\label{schur}{\bf Schur complement}.
+If matrix $M$ is partitioned into a 2-by-2 block form
+$$ M =
+\begin{pmatrix}
+A & B \cr
+C & D \cr
+\end{pmatrix}
+$$
+such that $A$ is square and nonsingular, 
+then the Schur complement of $A$ in $M$
+(sometimes also called the ``Schur complement on $D$'')
+is the matrix 
+$$D - CA^{-1}B.$$
+
+\item\label{inc}{\bf Incidence matrix}.
+If $G$ is a graph with $n$~vertices and $m$~edges,
+an incidence matrix of~$G$ is an $n$-by-$m$ matrix~$U$
+with a column for each edge of~$G$.  
+The column for edge~$(a,b)$ contains two nonzeros,
+a $1$ and a~$-1$, one in row~$a$ and one in row~$b$.
+The incidence matrix is not unique; permuting its columns
+or negating some of its columns produces another incidence matrix.
+Any incidence matrix~$U$ is related to the Laplacian~$L_G$ by
+$$L_G = UU^T.$$
+
+\item
+If $G$ is a weighted graph, its incidence matrix is the same
+as above~(\ref{inc}), without weights.  If $C=\diag(c)$ is
+the diagonal matrix of edge weights, in the same order as the
+columns of~$U$, then the weighted Laplacian~$L_G$ satisfies
+$$L_G = UCU^T.$$
+
+\item\label{aug}{\bf Augmented matrix}.
+An augmented matrix of an unweighted graph with $n$~vertices 
+and $m$~edges is a
+symmetric $(n+m)$-by-$(n+m)$ matrix defined in block form as
+$$
+\begin{pmatrix}
+I & U^T \cr
+U & 0 \cr
+\end{pmatrix}
+,
+$$
+where $U$ is an incidence matrix and $I$ is the $m$-by-$m$ 
+identity matrix.
+An augmented matrix of a weighted graph is
+$$
+\begin{pmatrix}
+R & U^T \cr
+U & 0 \cr
+\end{pmatrix}
+,
+$$
+where $R=\diag(1/c)=C^{-1}$ is the diagonal matrix of inverse edge weights.
+The Schur complement of $R$ is then $-UR^{-1}U^T = -L$, the negative
+of the weighted Laplacian.
+
+\item\label{resistive}{\bf Resistive network}.
+A resistive network is a weighted graph with $n$~vertices
+interpreted as nodes of an electrical circuit and $m$ edges interpreted
+as resistors joining pairs of nodes.  
+If the resistor at edge $e$ has resistance $r(e)$, the edge's weight
+is the inverse resistance $c(e) = 1/r(e)$.
+(Inverse resistance is often called ``conductance,'' whence the letter $c$, 
+but we will not use the term in this context to avoid confusion with the
+unrelated notion of graph conductance in~(\ref{cond}) above.)
+
+\item
+In a resistive network~$G$, suppose a current $i(a)$ is injected at each
+vertex~$a$, where $\ones^T i=0$ so the same total current is injected and
+removed from the network as a whole.
+For each edge $(a,b)\in E$ with $a<b$, let $f(a,b)$ be the {\em current} or 
+{\em flow} along edge $(a,b)$.
+Then {\em Ohm's law}, or current times resistance equals voltage, says
+$$v(a)-v(b) = f(a,b)r(a,b) \;\;\;\; \mbox{for all $(a,b)\in E$}.$$
+{\em Kirchoff's current law}, or current entering a node equals current leaving the node,
+says
+$$\sum_{b:(a,b)\in E} f(a,b) = i(a) \;\;\;\; \mbox{for all $a\in V$}.$$
+The two laws can be combined in one augmented system (\ref{aug}) as
+$$
+\begin{pmatrix}
+R & U^T \cr
+U & 0 \cr
+\end{pmatrix}
+\begin{pmatrix}
+f \cr
+-v \cr
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \cr
+i \cr
+\end{pmatrix},
+$$
+where $U$ is the incidence matrix of~$G$
+with appropriate signs, and $R$ is the
+$m$-by-$m$ diagonal matrix of edge resistances.
+The Schur complement of $R$ is $-UR^{-1}U^T$, 
+which is the negative Laplacian $-L$.  
+A step of block Gaussian elimination on the augmented
+system thus leads to the Laplacian linear system
+$$Lv=i$$
+relating the node voltages to the externally injected currents.
+
+\item{\bf Effective resistance}.
+In a resistive network, the effective resistance between
+two vertices~$a$ and~$b$, written $\Reff(a,b)$, 
+is the positive difference in voltage
+between~$a$ and~$b$ when one unit of current is injected at~$a$
+and extracted at~$b$.
+That is, if $Lv=\ones_a-\ones_b$ for~$a<b$, then
+$$\Reff(a,b) = (\ones_a-\ones_b)^Tv 
+  = (\ones_a-\ones_b)^TL\pinv (\ones_a-\ones_b) = v^TLv,$$
+where $\ones_a-\ones_b$
+is the vector whose $k$'th element is equal to 1 when $k=a$, 
+equal to $-1$ when $k=b$, and equal to zero elsewhere.
+We write $\Reff_G(a,b)$ if the graph is not clear from context.
+
+\item
+Let $G$ and $H$ be resistive networks on the same number of vertices.
+If $H\succeq G$, then for every pair of vertices $a$,~$b$ we have
+$\Reff_G(a,b) \geq \Reff_H(a,b)$.
+
+\item\label{GE}{\bf Symmetric Gaussian elimination}.
+If $L$ is the Laplacian of a connected weighted graph~$G$ 
+with $n>1$~vertices,
+then the result of one step of Gaussian elimination on~$L$ is the
+$n-1$-by-$n-1$ matrix
+$$L_B = L(2:n, 2:n) - \frac{1}{L(1,1)}L(2:n,1)L(1,2:n),$$
+which is a rank-1 modification to the submatrix $L(2:n, 2:n)$.
+Note that $L_B$ is the Schur complement of~$L(1,1)$ in~$L$.
+Also, $L_B$ is the Laplacian matrix of the (suitably weighted) 
+graph obtained from~$G$
+by adding edges between all neighbors of vertex~1,
+and then deleting vertex~1 and all its incident edges.
+
+If $B$ is any set of vertices of~$G$ and $A=V-B$, 
+and Gaussian elimination is used to eliminate all the 
+vertices of~$A$ in any order, the result is the matrix
+$$L_B = L(B,B) - L(B,A)L(A,A)^{-1}L(A,B),$$
+which is the Schur complement of~$L(A,A)$ (or on~$L(B,B)$) in~$L$.
+Then $L_B$ is the Laplacian matrix of the (suitably weighted)
+graph obtained from~$G$ by adding an edge between every pair 
+of vertices in~$B$ that are connected in~$G$ by a path of 
+vertices in~$A$.
+
+\item{\bf Equivalent networks}.
+If $G$ is a connected weighted graph whose vertices are
+partitioned into a set~$B$ of ``boundary'' vertices and
+a set~$V-B$ of ``interior'' vertices, 
+and if $L_B$ is the Schur complement on~$L_G(B,B)$ 
+as above~(\ref{GE}),
+then the effective resistances between vertices of~$B$
+are the same in~$L_G$ and in~$L_B$:
+$$\Reff_{L_B}(a,b) = \Reff_{L_G}(a,b)\;\;\mbox{for all $a,b\in B$}.$$
+Note that $L_B$ is {\em not} a submatrix of~$L_G$, 
+and the graph of~$L_B$ has more edges than the induced 
+subgraph of~$G$ on vertices~$B$.
+
+\item\label{Cholesky}{\bf Cholesky factorization}.
+If~$A$ is any positive definite matrix 
+(or, with some care, a positive semidefinite matrix),
+the Cholesky factorization is $A=R^TR$, where $R$
+is an upper triangular matrix with positive diagonal elements
+(non-negative in the semidefinite case).
+The Cholesky factorization of any $n$-by-$n$ matrix can
+be computed in $O(n^3)$ time and $O(n^2)$ memory;
+some but by no means all sparse matrices have better
+bounds.
+
+\item{\bf Cholesky graph game}.
+Given positive (semi)definite~$A$ with undirected graph~$G(A)$,
+the undirected graph~$G^+(A)=G(R+R^T)$ of the Cholesky factors
+of~$A$ is obtained as follows:
+\begin{verbatim}
+        for a = 1 : n
+          mark vertex a;
+          add "fill" edges between the umarked neighbors of vertex a;
+        end for
+\end{verbatim}
+(This gives the nonzero structure of~$R$ but not the nonzero values.)
+We are free to mark the vertices in any order;
+choosing a different order corresponds to applying a
+permutation symmetrically to the rows and columns of~$A$.
+
+\item{\bf Parter's theorem}.
+If the graph $G(A)$ is a tree, a vertex ordering exists for
+which the Cholesky factorization adds no fill and solving
+$Ax=b$ takes only $O(n)$ time and memory.
+
+\item{\bf Nested dissection}.
+If the graph $G(A)$ is the $\sqrt{n}$-by-$\sqrt{n}$ grid graph,
+the best possible elimination ordering has $O(n\log n)$ fill,
+for which Cholesky takes $O(n^{3/2})$ time.
+The same upper bounds hold for any planar graph.
+For the three-dimensional grid graph, the best possible
+fill is $O(n^{4/3})$ and Cholesky takes $O(n^2)$ time.
 
 \end{enumerate}
 
