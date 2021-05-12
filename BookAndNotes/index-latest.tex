@@ -31,7 +31,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of May 8, 2021}
+\date{Version of May 11, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -753,6 +753,90 @@ for which Cholesky takes $O(n^{3/2})$ time.
 The same upper bounds hold for any planar graph.
 For the three-dimensional grid graph, the best possible
 fill is $O(n^{4/3})$ and Cholesky takes $O(n^2)$ time.
+
+\item{\bf Matrix polynomials}.
+If $p(z) = \sum_{k=0}^t \beta_kz^k$ is a polynomial in a 
+scalar variable~$z$, and $A$~is a matrix,
+we write $p(A) = \sum_{k=0}^t \beta_kA^k$.
+Note that every vector in the Krylov subspace $\krylov_{t+1}(A,b)$
+is~$p(A)b$ for some polynomial~$p(z)$ of degree~$t$.
+
+\item
+If $A$ is a symmetric matrix, $Ax=b$, 
+and $q(z) = 1 - zp(z)$ is a polynomial with
+$q(0)=1$ and $q(\lambda)=0$ for every eigenvalue~$\lambda$ of~$A$,
+then $p(A)b = x$.
+Therefore $x$ is in the Krylov subspace $\krylov_{t}(A,b)$, 
+where $t$ is the number of {\em distinct} eigenvalues of~$A$.
+
+\item
+The {\em condition number} of a square matrix~$A$ is 
+$\kappa(A)=\|A\|\,\|A^{-1}\|$, interpreted as~$\infty$
+if $A$ is singular.  If $A$ is symmetric and positive 
+definite, $\kappa(A) = \lambda_n/\lambda_1$ is the ratio
+of the extreme eigenvalues.
+
+\item{\bf Conjugate gradient}.\label{cg} 
+The conjugate gradient algorithm (or CG)
+solves $Ax=b$, where $A\succ 0$ is a symmetric, positive definite
+matrix (see Shewchuk for details).
+Each iteration performs one matrix-vector multiplication with~$A$
+and some vector arithmetic, taking $O(n+m)$~time per iteration
+if $A$~has $m$~nonzeros.
+The relative error in the approximate solution~$x_j$ is bounded by
+$$\frac{||x_j-x||_A}{||x||_A} < \epsilon$$
+after 
+$$j = O(\sqrt{\kappa(A)}\,\log(1/\epsilon))$$
+iterations (in exact arithmetic), 
+where $\kappa(A)=\lambda_n/\lambda_1$ is the condition number of~$A$
+and $||v||_A = (v^TAv)^{1/2}$ is the $A$-norm.
+With some care, CG can also be used for a positive semidefinite
+matrix whose null space is known, e.g.\ a weighted graph Laplacian.
+
+\item{\bf Preconditioned conjugate gradient}.\label{pcg} 
+The preconditioned conjugate gradient algorithm (or PCG)
+solves $Ax=b$ by applying CG to the linear system 
+$$(B^{-1/2}AB^{-1/2})(B^{1/2}x) = B^{-1/2}b,$$
+where $A$ and~$B$ are symmetric positive definite.
+Each iteration of PCG performs one matrix-vector multiplication with~$A$,
+one linear system solve with~$B$, and some vector arithmetic.
+Matrix~$B$ is called a {\em preconditioner} for~$A$, 
+and may or may not be formed explicitly.
+A good preconditioner satisfies two criteria:
+\begin{itemize}
+\item It should be ``easy'' to solve the linear system $By=z$ for $y$.
+\item The condition number $\kappa(B^{-1/2}AB^{-1/2}) = \kappa(AB^{-1})$ 
+should be smaller than $\kappa(A)$.
+\end{itemize}
+With some care, PCG can also be used with positive semidefinite
+matrices $A$ and~$B$ if they have the same null space.
+
+\item
+For a symmetric positive semidefinite matrix~$A$,
+the {\em finite condition number} is 
+$\kappa_f(A)=\lambda_n/\lambda_k$, where $\lambda_k$ is
+the smallest nonzero eigenvalue.
+For example, if~$L$ is the Laplacian of a connected graph,
+$\kappa_f(L)=\lambda_n/\lambda_2$ is the relevant condition number
+for the convergence of conjugate gradient.
+
+\item
+Let~$A$ and~$B$ be symmetric positive semidefinite matrices
+with the same null space (e.g., weighted Laplacians of two
+connected graphs on the same vertices).
+The {\em finite condition number}~$\kappa_f(A,B)$ is $\kappa_f(AB\pinv)$,
+which is the relevant condition number for the convergence of conjugate
+gradient on~$Ax=b$ with preconditioner~$B$.
+Note that $\kappa_f(A,B) = \kappa_f(B,A)$.
+
+\item
+Let~$A$ and~$B$ be two symmetric positive semidefinite matrices
+with the same null space.
+If $\alpha B \preceq A \preceq \beta B$,
+then $\alpha \leq \lambda \leq \beta$
+for every nonzero eigenvalue~$\lambda$ of~$AB\pinv$,
+and therefore $\kappa_f(A,B) \leq \beta/\alpha$.
+
 
 \end{enumerate}
 
