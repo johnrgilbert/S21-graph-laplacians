@@ -1,0 +1,45 @@
+
+\par\bigskip
+{\bf Problem 3. Conjugate gradient algorithm.}
+This is another open-ended problem whose goal is for you to get some
+intuition about the behavior of the conjugate gradient algorithm for graph Laplacians.
+You are to experiment with CG in Matlab. You may use Matlab's built-in {\tt pcg()}
+routine or write your own (simpler) CG in a dozen lines of Matlab.
+In the latter case you have the advantage that you can include reorthogonalization
+against the constant vector~$w_1$ if necessary 
+(though I guess you could add that to Matlab's {\tt pcg.m} source too).
+There are two experiments to run:
+\par\medskip
+{\bf 3(a)}
+Experiment with the Laplacian matrices of the same sample graphs you
+used for the Lanczos experiments in Homework~2, plus others if you want.
+Try CG three ways:  with no preconditioning, with Jacobi preconditioning
+(that is, the preconditioner is just the diagonal of the matrix), and
+with incomplete Cholesky preconditioning from Matlab's {\tt R = cholinc(L,'0')}.
+Make and turn in semilog plots of convergence history of the relative residual
+as I did in class on Wednesday, May 7.  Also, for each Laplacian, what is the
+finite condition number $\kappa_f(L)$, that is, the ratio of the largest to
+smallest nonzero eigenvalue?  Your Lanczos experiments from last time give you
+the data to answer this.
+\par\medskip
+{\bf 3(b)}
+Generate two sequences of Laplacian matrices of graphs of increasing sizes as
+follows:  The first sequence is the ``model problem'' square grid graph;
+Matlab's {\tt L = laplacian(grid5(k));} gives you the $k$-by-$k$ grid with
+$n=k^2$ vertices.  The second sequence is flat random graphs, generated with
+Matlab's {\tt sprandsym()}.  Set the parameters so that the second sequence
+has graphs of about the same sizes and numbers of edges as the first sequence.
+{\em Important:} For the second sequence, use just the largest connected 
+component of the graph you generate; see Matlab's {\tt components()} routine.
+\par
+For both sequences, convert the matrices to unweighted Laplacians (with {\tt laplacian()}).
+Experiment with CG, both unpreconditioned and preconditioned.  Your goal is to get
+enough data to estimate for each sequence the asymptotic scaling of the number of
+CG iterations needed to reach some fixed residual reduction 
+(say $10^{-6}$) as a function of $n$, the dimension of the matrix.  
+Is the scaling different for the two sequences?
+Is it different for preconditioned and unpreconditioned CG?
+\par
+Write a paragraph or so analyzing your results and stating your conclusions.
+
+\end{document}

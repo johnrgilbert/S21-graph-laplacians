@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+
+\newcommand{\m}[1]{{\bf{#1}}}       % for matrices and vectors
+\newcommand{\ones}{\m1}             % vector of all ones
+\newcommand{\zeros}{\m0}            % vector of all zeros
+\newcommand{\tr}{^{\sf T}}          % transpose
+\newcommand{\pinv}{^{\dagger}}      % pseudoinverse
+
+
+\topmargin -.5in
+\textheight 8.5in
+\oddsidemargin 0pt
+\evensidemargin 0pt
+\textwidth 6.5in
+
+%-------------------------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------------------------
+
+\title{Homework 3}
+\author{CS 292F : Laplacian Matrices and Spectra : Spring 2021}
+
+\date{Out: Tuesday, May 11. Due: Monday, May 24.}
+\maketitle
+
+{\bf Homework policy.} 
+Please turn in all your homework through GradeScope as a single .pdf file.
+For computational problems, turn in listings of any code you wrote; 
+any sample output and plots; and an interactive session transcript as
+a Matlab diary file, Jupyter notebook .pdf, etc.
+
+You are allowed to discuss the problems in groups of up to three 
+(you and up to two others), but you must write up the solutions 
+on your own. If you do work with anyone, you must acknowledge your
+collaborators. Also, you must cite any references you use other than
+the textbook and your class notes.
+
+You are forbidden from searching the web in any way to find answers
+to these problems. However, you are welcome to search the web for
+advice on using Matlab, Julia, and other software tools. Stackoverflow
+is great.
+
+\par\bigskip
+{\bf Problem 1. Submatrix of Laplacian.}
+
+\par\medskip
+{\bf 1.1.} 
+Let $L$ be the Laplacian of a weighted, connected graph 
+with $n\ge 3$~vertices.
+Prove that if $1<k<n$, the $k$-by-$k$ matrix $L(1:k,1:k)$ is 
+positive definite (that is, its eigenvalues are all strictly greater
+than zero, so it is nonsingular).
+
+\par\medskip
+{\bf 1.2.} 
+Show (by means of a counterexample) that the word ``connected''
+cannot be removed from the statement above.
+
+\par\bigskip
+{\bf Problem 2. Semidefinite ordering and eigenvalues, revisited.} 
+Two $n$-by-$n$ matrices $A$ and $B$ are said to be {\em similar} 
+if there exists a nonsingular matrix $M$ with $M^{-1}AM = B$.
+
+Recall that Homework 2 Problem 2 showed that two $n$-vertex
+graphs~$G$ and~$H$ can satisfy
+$\lambda_i(G)\le\lambda_i(H)$ for all $1\le i\le n$, 
+but still $G\not\preceq H$.
+Here we consider adding similarity into the mix.
+
+\par\medskip
+{\bf 2.1.} 
+Prove that if any two matrices $A$ and $B$ are similar, 
+they have the same eigenvalues.
+
+\par\medskip
+{\bf 2.2.} 
+Let $G$ and~$H$ be weighted $n$-vertex graphs, 
+with Laplacian eigenvalues
+$0=\lambda_1(G)\le\lambda_2(G)\le\cdots\le\lambda_n(G)$ and
+$0=\lambda_1(H)\le\lambda_2(H)\le\cdots\le\lambda_n(H)$,
+and suppose $\lambda_i(G)\le\lambda_i(H)$ for all $1\le i\le n$.
+Prove that there exists an orthogonal matrix~$Q$ such that
+$Q^TGQ \preceq H$. 
+(I'm writing $G$ for the Laplacian matrix $L_G$ here.)
+Recall that $Q^T=Q^{-1}$ for an orthogonal matrix,
+so this says that some {\em orthogonal similarity} of~$G$
+precedes $H$ in the $\preceq$ ordering.
+
+\par\medskip
+{\bf 2.3.} 
+A {\em permutation matrix} is a special case of an orthogonal matrix, 
+with a single nonzero (equal to 1) in each row and in each column.
+If $P$ is a permutation matrix, 
+the graph~$P^TGP$ is isomorphic to the graph~$G$.
+If $G$ and~$H$ are as in (2.2) above, 
+must there exist a permutation matrix~$P$ such that $P^TGP \preceq H$?
+I don't know the answer to this question; 
+see if you can find either a proof or a counterexample.
+
+\par\bigskip
+{\bf Problem 3. Conjugate gradient algorithm.}
+This is another open-ended problem whose goal is for you to get some
+intuition about the behavior of the conjugate gradient algorithm for graph 
+Laplacians.
+You are to experiment with preconditioned conjugate gradient
+in the environment of your choice.
+(As usual I'll describe this in Matlab terms, but the same routines
+exist in python/scipy and probably somewhere in Julia and Mathematica.)
+You may use a built-in PCG routine (in Matlab it's {\tt pcg()}),
+or write your own (simpler) PCG in a dozen lines or so of code.
+In the latter case you have the advantage that you can include reorthogonalization
+against the constant vector~$\ones$ if necessary 
+(though I guess you could add that to Matlab's {\tt pcg.m} source too).
+There are two experiments to run:
+
+\par\medskip
+{\bf 3.1.}
+Experiment with the Laplacian matrices of the same sample graphs you
+used for the Lanczos experiments in Homework~1, plus others if you want.
+Try CG three ways:  with no preconditioning, with Jacobi preconditioning
+(that is, the preconditioner is just the diagonal of the matrix), and
+with incomplete Cholesky preconditioning 
+(in Matlab, {\tt R = cholinc(L,'0')}).
+Make and turn in semilog plots of convergence history for each matrix
+(or at least for a handful of interesting ones):
+For each matrix, plot the relative residual $||b-Ax||$ against the 
+iteration number, with a different-colored line for each preconditioner.
+Also, for each matrix, report the finite condition number $\kappa_f(L)$, 
+that is, the ratio of the largest to smallest nonzero eigenvalue.  
+Your Lanczos experiments from last time give you the data for this.
+
+\par\medskip
+{\bf 3.2.}
+Generate two sequences of Laplacian matrices of graphs of increasing sizes as
+follows:  
+\begin{itemize}
+\item
+The first sequence is the ``model problem'' square grid graph.
+({\tt L = laplacian(grid5(k))} in Matlab
+gives the $k$-by-$k$ grid with $n=k^2$ vertices;
+you can write a similar routine in other languages.)
+\item
+The second sequence is flat random graphs, with the same number of vertices
+and (at least approximately) the same number of edges as the grid graphs.
+(In Matlab you can do this with {\tt sprandsym()};
+all you really need to do, though, is generate a sequence of random
+pairs of vertices.)
+In the second sequence, you may want to use just the largest connected 
+component of the graph you generate; see Matlab's {\tt components()} routine.
+\end{itemize}
+For both sequences, convert the matrices to unweighted Laplacians 
+(with {\tt laplacian()}).
+Experiment with unpreconditioned CG.
+Your goal is to get enough data to estimate for each sequence the 
+asymptotic scaling of the number of CG iterations needed to reach 
+some fixed residual reduction (say $10^{-8}$) as a function of $n$, 
+the dimension of the matrix.  
+Is the scaling different for the two sequences?
+\par
+Write a paragraph or so analyzing your results and stating your conclusions.
+
+\end{document}
