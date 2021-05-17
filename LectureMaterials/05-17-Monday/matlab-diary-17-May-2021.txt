@@ -1,0 +1,190 @@
+Matlab diary from CS 292F, Monday, May 17, 2021
+
+This is /Users/gilbert/Documents/S21-graph-laplacians/Matlab/startup.m
+Using diary file matlab-diary-17-May-2021.txt
+
+> A = grid5(10);
+> size(A)
+ans =
+   100   100
+> nnz(A)
+ans =
+   460
+> spy(A)
+> close all
+> A(1:15,1:15)
+ans =
+   (1,1)        4
+   (2,1)       -1
+  (11,1)       -1
+   (1,2)       -1
+   (2,2)        4
+   (3,2)       -1
+  (12,2)       -1
+   (2,3)       -1
+   (3,3)        4
+   (4,3)       -1
+  (13,3)       -1
+   (3,4)       -1
+   (4,4)        4
+   (5,4)       -1
+  (14,4)       -1
+   (4,5)       -1
+   (5,5)        4
+   (6,5)       -1
+  (15,5)       -1
+   (5,6)       -1
+   (6,6)        4
+   (7,6)       -1
+   (6,7)       -1
+   (7,7)        4
+   (8,7)       -1
+   (7,8)       -1
+   (8,8)        4
+   (9,8)       -1
+   (8,9)       -1
+   (9,9)        4
+  (10,9)       -1
+   (9,10)      -1
+  (10,10)       4
+   (1,11)      -1
+  (11,11)       4
+  (12,11)      -1
+   (2,12)      -1
+  (11,12)      -1
+  (12,12)       4
+  (13,12)      -1
+   (3,13)      -1
+  (12,13)      -1
+  (13,13)       4
+  (14,13)      -1
+   (4,14)      -1
+  (13,14)      -1
+  (14,14)       4
+  (15,14)      -1
+   (5,15)      -1
+  (14,15)      -1
+  (15,15)       4
+
+> e = eigs(A,5,'SM')
+e =
+    0.1620
+    0.3985
+    0.3985
+    0.6350
+    0.7713
+> e = eigs(A,5,'LM')
+e =
+    7.8380
+    7.6015
+    7.6015
+    7.3650
+    7.2287
+> 7.2287 / 0.1620
+ans =
+   44.6216
+
+> n = length(A)
+n =
+   100
+> b = rand(n,1);
+> whos
+  Name        Size             Bytes  Class     Attributes
+
+  A         100x100             8168  double    sparse    
+  ans         1x1                  8  double              
+  b         100x1                800  double              
+  e           5x1                 40  double              
+  n           1x1                  8  double              
+
+> x = A \ b;
+> norm(b - A*x)
+ans =
+   1.8179e-14
+> help pcg
+ ...
+
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,n);
+> norm(b - A*x)
+ans =
+   5.6069e-06
+> iter
+iter =
+    27
+> resvec
+resvec =
+    6.0507
+    8.8570
+    9.1424
+    6.6132
+    5.4341
+    4.0870
+    2.4975
+    1.2892
+    0.5983
+    0.2609
+    0.1695
+    0.0978
+    0.0636
+    0.0449
+    0.0326
+    0.0203
+    0.0121
+    0.0090
+    0.0050
+    0.0024
+    0.0023
+    0.0008
+    0.0004
+    0.0002
+    0.0001
+    0.0000
+    0.0000
+    0.0000
+> size(resvec)
+ans =
+    28     1
+> semilogy(resvec / resvec(1))
+> close all
+> clear
+> whos
+
+> load bcsstk08
+> whos
+  Name             Size               Bytes  Class     Attributes
+
+  BCSSTK08      1074x1074            215976  double    sparse    
+  M                1x1               216646  struct              
+
+> A = BCSSTK08;
+> spy(A)
+> n = length(A)
+n =
+        1074
+> b = rand(n,1);
+> whos
+  Name             Size               Bytes  Class     Attributes
+
+  A             1074x1074            215976  double    sparse    
+  BCSSTK08      1074x1074            215976  double    sparse    
+  M                1x1               216646  struct              
+  b             1074x1                 8592  double              
+  n                1x1                    8  double              
+
+> condest(A)
+ans =
+   4.7262e+07
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,n);
+> iter
+iter =
+   964
+> semilogy(resvec / resvec(1))
+> close all
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,10*n);
+> iter
+> iter =
+        6472
+> norm(b - A*x)
+ans =
+   1.5949e-05
+> semilogy(resvec / resvec(1))
