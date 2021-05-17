@@ -110,10 +110,13 @@ in the environment of your choice.
 exist in python/scipy and probably somewhere in Julia and Mathematica.)
 You may use a built-in PCG routine (in Matlab it's {\tt pcg()}),
 or write your own (simpler) PCG in a dozen lines or so of code.
-In the latter case you have the advantage that you can include reorthogonalization
-against the constant vector~$\ones$ if necessary 
+In the latter case you have the advantage that you can include reo
+rthogonalization against the constant vector~$\ones$ if necessary 
 (though I guess you could add that to Matlab's {\tt pcg.m} source too).
-There are two experiments to run:
+
+There are two experiments to run. 
+For both, you can use a random right-hand side in the range of $L$,
+which you can generate by something like (Matlab) {\tt b = L*randn(n,1)}.
 
 \par\medskip
 {\bf 3.1.}
@@ -121,11 +124,14 @@ Experiment with the Laplacian matrices of the same sample graphs you
 used for the Lanczos experiments in Homework~1, plus others if you want.
 Try CG three ways:  with no preconditioning, with Jacobi preconditioning
 (that is, the preconditioner is just the diagonal of the matrix), and
-with incomplete Cholesky preconditioning 
-(in Matlab, {\tt R = cholinc(L,'0')}).
+with incomplete Cholesky preconditioning.
+(In Matlab, {\tt opts.shape = 'upper'; R = ichol(L, opts);} 
+gives the upper triangular incomplete Choleky factor, and then
+you can call {\tt pcg(L, b, tol, niters, R', R);} 
+to use $R^TR$ as a preconditioner.)
 Make and turn in semilog plots of convergence history for each matrix
 (or at least for a handful of interesting ones):
-For each matrix, plot the relative residual $||b-Ax||$ against the 
+For each matrix, plot the relative residual $||b-Lx||$ against the 
 iteration number, with a different-colored line for each preconditioner.
 Also, for each matrix, report the finite condition number $\kappa_f(L)$, 
 that is, the ratio of the largest to smallest nonzero eigenvalue.  
