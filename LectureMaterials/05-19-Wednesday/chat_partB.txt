@@ -1,0 +1,6 @@
+12:10:14	 From Zexi Huang : you stopped at alpha beta dn
+12:23:34	 From Daniel Zhang : Does N(A) include vertices of A?
+12:27:46	 From Daniel Zhang : Ok
+12:27:59	 From Jacqueline Mai : then can't B contain vertices of A?
+12:28:08	 From Jacqueline Mai : if N(A) doesn't contain A
+12:28:28	 From Jacqueline Mai : but there aren't there edges from A to N(A)?
