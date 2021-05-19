@@ -1,0 +1,93 @@
+Matlab diary from CS 292F, Wednesday, May 19, 2021
+
+This is /Users/gilbert/Documents/S21-graph-laplacians/Matlab/startup.m
+Using diary file matlab-diary-19-May-2021.txt
+
+> load pgp
+> whos
+  Name               Size                 Bytes  Class     Attributes
+
+  L              10680x10680            1034440  double    sparse    
+  graphname          1x3                      6  char                
+  v              10680x3                 256320  double              
+
+> A = L;
+> n = length(A)
+n =
+       10680
+> spy(A)
+> norm( A * ones(n,1))
+ans =
+     0
+> b = rand(n,1);
+> b = b - mean(b);
+> sum(b)
+ans =
+  -2.6681e-12
+> nnz(A)
+ans =
+       59312
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,n);
+> norm(b - A*x)
+ans =
+   2.9988e-05
+> iter
+iter =
+   638
+> semilogy(resvec / resvec(1))
+> xlabel('CG iterations')
+> ylabel('relative residual')
+> title(sprintf('PGP: %d vertices, %d edges',length(A),nnz(triu(A))))
+> D = diag( diag(A));
+> whos
+  Name               Size                 Bytes  Class     Attributes
+
+  A              10680x10680            1034440  double    sparse    
+  D              10680x10680             256328  double    sparse    
+  L              10680x10680            1034440  double    sparse    
+  ans                1x1                      8  double              
+  b              10680x1                  85440  double              
+  flag               1x1                      8  double              
+  graphname          1x3                      6  char                
+  iter               1x1                      8  double              
+  n                  1x1                      8  double              
+  relres             1x1                      8  double              
+  resvec           639x1                   5112  double              
+  v              10680x3                 256320  double              
+  x              10680x1                  85440  double              
+
+> nnz(D)
+ans =
+       10680
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,n,D);
+> hold on
+> semilogy(resvec / resvec(1),'k')
+> iter
+iter =
+   155
+> opts.shape='upper'
+> opts = 
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+    shape: 'upper'
+> R = ichol(A,opts);
+> nnz(R)
+ans =
+       34996
+> nnz(triu(R))
+ans =
+       34996
+> nnz(A)
+ans =
+       59312
+> nnz(R + R')
+ans =
+       59312
+> [x, flag, relres, iter, resvec] = pcg(A,b,1e-6,n,R',R);
+> norm(b - A*x)
+ans =
+   2.9493e-05
+> semilogy(resvec / resvec(1),'r')
+> iter
+iter =
+    56
