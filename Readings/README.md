@@ -1,0 +1,1 @@
+This directory contains: the textbook, which is Dan Spielman's "Spectral and Algebraic Graph Theory"; a growing tex/pdf document called "Index of Notation and Definitions", which has lots of goodies in it and will be updated regularly to keep up with lectures; and a few papers from the literature that will be assigned as reading.

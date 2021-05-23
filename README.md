@@ -6,7 +6,7 @@ The main course web site is on [GauchoSpace](https://gauchospace.ucsb.edu/course
 
 This repository will be updated throughout the quarter with course materials. You should probably just clone it to your own computer, and do a "git pull" every now and then to keep it up to date. Current contents are:
 
-- [**BookAndNotes**](BookAndNotes/): This directory contains the textbook, which is Dan Spielman's "Spectral and Algebraic Graph Theory". It also contains a growing tex/pdf document called "Index of Notation and Definitions", which has lots of goodies in it and will be updated regularly to keep up with lectures.
+- [**Readings**](Readings/): This directory contains: the textbook, which is Dan Spielman's "Spectral and Algebraic Graph Theory"; a growing tex/pdf document called "Index of Notation and Definitions", which has lots of goodies in it and will be updated regularly to keep up with lectures; and a few papers from the literature that will be assigned as reading.
 - [**LectureMaterials**](LectureMaterials/): This directory contains the materials I use or generate in each lecture, including ipad/whiteboard images, Matlab transcripts and figures, and any slides. It doesn't include the recorded Zoom videos, which are too big for this site; to find those, go to GauchoSpace.
 - [**Homework**](Homework/): This directory contains all the homework assignments, including LaTeX source, and any auxiliary files needed for assignments.
 - [**Projects**](Projects/): This directory's README.md has the policy and schedule for the final projects, and some suggested topics. It will eventually also contain all the project proposals and final project reports.
