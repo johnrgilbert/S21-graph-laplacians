@@ -1,0 +1,391 @@
+<html>
+
+<head>
+<title> CS 290H References </title>
+</head>
+
+<h2>
+<center>
+<a href="http://www.cs.ucsb.edu/~gilbert/cs290hSpr2014/">CS 290H, 
+Spring 2014</a>: References</center>
+</h2>
+
+<h3><center><b><font color="#ef0000">
+This list is still under construction!
+</font></b></center></h3>
+
+<p>
+<u><b>Reference to notation and definitions</b></u>
+<p>
+<ul>
+<li>
+<a href="notation.pdf">CS 290H index</a>.
+A numbered list of definitions, notation, and key theorems for the course.
+There is a lot of variation in terminology and notation in the literature
+on spectral graph theory; this list gives the version we will use.
+The list will grow during the quarter.
+<p>
+</ul>
+
+<u><b>Spectral graph theory</b></u>
+<p>
+<ul>
+<li>
+See especially 
+<a href="http://www.cs.yale.edu/homes/spielman/561/">Dan Spielman's online lecture notes</a>.
+I will be assigning readings from Spielman's notes, among other papers.
+<p>
+<li>
+<a href="http://simons.berkeley.edu/workshops/spectral2014-boot-camp">Algorithmic spectral graph theory boot camp</a>.
+Videos of a one-week program of introductory lectures from a 2014 workshop at the Simons Institute at Berkeley.
+<p>
+<li> Fan Chung.
+  <a href="http://www.amazon.com/Spectral-Theory-Regional-Conference-Mathematics/dp/0821803158">
+  Spectral Graph Theory</a>.  AMS, 1997.
+  <a href="http://www.math.ucsd.edu/~fan/research/revised.html">Here are some recently updated chapters</a>.
+  This is a wonderfully thorough and complete book on the mathematics, 
+  but not the computational aspects, of graph spectra.
+  Warning:  The definitions in this business vary from one place to another,
+  and what Chung calls the "Laplacian" is what we (and Spielman) call
+  the "normalized Laplacian".  They are closely related but have different
+  eigenvalues and eigenvectors in general.
+<p>
+<li> Chris Godsil and Gordon Royle.
+ <a href="http://www.amazon.com/Algebraic-Graph-Theory-Chris-Godsil/dp/0387952209">Algebraic Graph Theory</a>.
+ Springer, 2001.
+ Very comprehensive background on graph theory and its algebraic connections, 
+ including the spectra of Laplacians and other graph-based matrices.
+ Chapter 1 is a good quick overview of graph definitions.  
+ Chapter 13 is a good, fairly brief, overview of graph Laplacians. 
+ Godsil and Royle's Laplacian is the same as ours and Spielman's, 
+ though they give a different definition in terms of incidence matrices.
+<p>
+</ul>
+
+<p>
+<u><b>Applications in machine learning, statistical inference, and data analysis</b></u>
+<p>
+<ul>
+<li> Aaron Clauset's
+<a href="http://tuvalu.santafe.edu/~aaronc/courses/5352/fall2013/csci5352_2013_L16.pdf">
+introductory lecture on stochastic blockmodels</a>.
+A widely studied generative graph model for clustering behavior.
+<p>
+<li> D. L. Sussman, M. Tang, D. E. Fishkind, and C. E. Priebe. 
+<a href="http://arxiv.org/pdf/1108.2228v3.pdf">
+A consistent adjacency spectral embedding for stochastic blockmodel graphs</a>. 
+JASA 107: 1119-1128, 2012.
+Carey writes: See Figure 3.
+<p>
+<li>
+P. Sarkar and P. J. Bickel.
+<a href="http://arxiv.org/abs/1310.1495">
+Role of normalization in spectral clustering for stochastic blockmodels</a>.
+Dan Sussman writes: The recent paper that we really like regarding the A vs L issue.
+Figure 1 shows the asymptotic ratio between the "variance" of the eigenvectors of 
+the (normalized) Laplacian vs the "variance" of the eigenvectors of the adjacency. 
+It shows that for many parameter settings the (normalized) Laplacian is to be preferred, 
+at least when using k-means for subsequent clustering.
+<p>
+<li>
+T. Qin and K. Rohe.
+<a href="http://www.stat.wisc.edu/~karlrohe/homepage/Welcome_files/RSC_arxiv.pdf">
+Regularized spectral clustering under the degree-corrected stochastic blockmodel</a>.  
+NIPS 2013.
+Dan Sussman writes: Another paper, which is also interesting, studies another Laplacian type object 
+and has results showing that very sparse graphs can still be clustered using spectral methods 
+on this matrix. It's quite simple as well and I wonder if its nice theoretical properties also 
+translate into nice computational properties.
+<p>
+<li>
+C. Seshadhri, Tamara G. Kolda, and Ali Pinar.
+<a href="http://dx.doi.org/10.1103/PhysRevE.85.056109">
+Community structure and scale-free collections of Erdős-Rényi graphs</a>.
+A generative graph model called BTER that's sort of related to stochastic block models,
+but tries to match degree distributions and local clustering behavior explicitly.
+<p>
+<li>
+Tamara G. Kolda, Ali Pinar, Todd Plantenga, and C. Seshadhri.
+<a href="http://arxiv.org/abs/1302.6636">
+A scalable generative graph model with community structure</a>.
+Algorithmic considerations and experimental results with BTER.
+<p>
+<li>
+Lin and Cohen.
+<a href="ClassNotesDiariesSlides/LinCohenPowerIterationClustering.pdf">
+Power iteration clustering</a>.
+A spectral clustering method that tries to use one vector to find several clusters.
+<p>
+<li>
+U. von Luxburg.
+<a href="http://www.informatik.uni-hamburg.de/ML/contents/people/luxburg/publications/Luxburg07_tutorial.pdf">
+A tutorial on spectral clustering</a>.
+</ul>
+
+<u><b>Applications in engineering and science</b></u>
+<p>
+<ul>
+<li>
+<p>
+</ul>
+<p>
+
+<u><b>Applications in graph algorithms, partitioning, network flow, etc.</b></u>
+<p>
+<ul>
+<li>
+F. McSherry.
+<a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=959929">
+Spectral partitioning of random graphs</a>.
+FOCS 2001.
+A classic paper showing that Laplacian methods can find
+good partitions, colorings, and cliques in most graphs
+that have them.
+<p>
+<li>
+A. Pothen, H. D. Simon, and K.-P. Liou.
+<a href="http://epubs.siam.org/doi/abs/10.1137/0611030">
+Partitioning sparse matrices with eigenvectors of graphs</a>.
+SIAM. J. Matrix Anal. Appl. 11: 430–452, 1989.
+A classic paper that introduced the spectral partitioning heuristic 
+to the scientific computing community.
+<p>
+<li>
+T. F. Chan, J. R. Gilbert, and S. H. Teng.
+<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.53.4205&rep=rep1&type=pdf">
+Geometric spectral partitioning</a>.
+Xerox PARC technical report, 1995.
+<p>
+<li>
+Dan Spielman and Shanghua Teng.
+<a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=548468">
+Spectral partitioning works: Planar graphs and finite element meshes</a>.
+Proc. 37th FOCS, IEEE, 1996.
+Good separators for planar graphs by repeatedly using low-conductance
+spectral cuts.
+<p>
+<li>
+Jon Kelner. 
+<a href="http://epubs.siam.org/doi/abs/10.1137/S0097539705447244">
+Spectral partitioning, eigenvalue bounds, and circle packings for graphs of bounded genus</a>.
+SIAM Journal on Computing 35.4: 882-902, 2006.
+Extends the Spielman/Teng spectral proof the planar separator theorem
+to graphs of genus g.
+<p>
+<li>
+P. Christiano, J. A. Kelner, A. Madry, D. A. Spielman, and S.-H. Teng. 
+<a href="http://dl.acm.org/citation.cfm?id=1993674">
+Electrical flows, Laplacian systems, and faster approximation of maximum flow in undirected graphs</a>. 
+Proc. 43rd STOC, ACM, 2011.
+Finding a max flow by solving a sequence of Laplacian linear systems.
+<p>
+<li>
+J. A. Kelner, G. L. Miller, and R. Peng. 
+<a href="http://doi.acm.org/10.1145/2213977.2213979">
+Faster approximate multicommodity flow using quadratically coupled flows</a>.
+Proc. 44th STOC, ACM, 2012.
+<p>
+<li>
+Y. T. Lee, S. Rao, and N. Srivastava. 
+<a href="http://doi.acm.org/10.1145/2488608.2488704">
+A new approach to computing maximum flows using electrical flows</a>.
+Proc. 45th STOC, ACM, 2013.
+<p>
+</ul>
+<p>
+
+<u><b>Applications of nonsymmetric matrices of graphs</b></u>
+<p>
+<ul>
+<li>
+F. Krzakala, C. Moore, E. Mossel, J. Neeman, A. Sly, L. Zdeborová, and P. Zhang.
+<a href="http://arxiv.org/abs/1306.5550">
+Spectral redemption: clustering sparse networks</a>.
+<p>
+<li>
+Q. Zhu, G. Song, and J. Shi.
+<a href="http://www.cis.upenn.edu/~jshi/papers/contour_zhu_song_shi.pdf">
+Untangling cycles for contour grouping</a>.
+<p>
+</ul>
+<p>
+
+<u><b>Algorithms to compute eigenvectors and eigenvalues</b></u>
+<p>
+<ul>
+<li> Z. Bai, J. Demmel, J. Dongarra, A. Ruhe, and H. Van der Vorst, editors.
+  <a href="http://web.eecs.utk.edu/~dongarra/etemplates/index.html">
+  Templates for the Solution of Algebraic Eigenvalue Problems: A Practical Guide</a>.
+  Available free online or in hardcopy from SIAM.
+  This is a comprehensive and invaluable book on all kinds of eigenvalue and generalized
+  eigenvalue problems, both Hermitian (the kind we're interested in) and not.
+<p>
+<li> Jim Demmel.
+  <a href="http://www.ec-securehost.com/SIAM/ot56.html">Applied
+  Numerical Linear Algebra</a>.  SIAM, 1997.
+  This is a wonderful book and you should buy it if you plan
+  to do anything in computational science or numerical analysis.
+  It has excellent chapters on conjugate gradients and Lanczos.
+<p>
+<li> R. Grimes, J. Lewis, and H. Simon.
+<a href="http://dx.doi.org/10.1137/S0895479888151111">A shifted block Lanczos 
+algorithm for solving sparse symmetric generalized eigenproblems</a>.
+A paper about an industrial-strength eigensolver that deals with
+many of the tricky computational and numerical issues that arise
+in practice.
+<p>
+<li>
+L. N. Trefethen and D. Bau.
+<a href="https://people.maths.ox.ac.uk/trefethen/text.html">Numerical Linear Algebra</a>.
+This is the most readable and elegant introduction to numerical
+methods for eigenanalysis and linear system solving, 
+emphasizing iterative methods.
+</ul>
+
+<u><b>Algorithms to solve Laplacian linear systems</b></u>
+<p>
+<ul>
+<li> Jonathan Shewchuk, <a href="http://www-2.cs.cmu.edu/~jrs/jrspapers.html">
+An introduction to the conjugate gradient method without the agonizing pain</a>.
+What it says.  A classic.
+<p>
+<li> R. Barrett and nine co-authors, 
+<a href="http://www.netlib.org/linalg/html_templates/Templates.html">
+Templates for the Solution of Linear Systems</a>.
+A terse user's guide to iterative methods for solving linear systems.
+Code in C, C++, Fortran, and Matlab is available as well.
+<p>
+<li> Dan Spielman,
+<a href="http://www.cs.yale.edu/homes/spielman/PAPERS/icm10post.pdf">
+Algorithms, graph theory, and linear equations in Laplacian matrices</a>.
+A very readable survey.
+<p>
+<li> Nisheeth Vishnoi,
+<a href="http://research.microsoft.com/en-us/um/people/nvishno/Site/Lxb-Web.pdf">
+Lx = b: Laplacian solvers and their algorithmic applications</a>.
+A long, detailed, valuable survey paper from a theoretical point of view.
+<p>
+<li> Sivan Toledo and Haim Avron's book chapter on
+<a href="http://www.tau.ac.il/~stoledo/Bib/Pubs/CSC-Combinatorial-Preconditioners.pdf">combinatorial preconditioning</a>.
+<p>
+<li> Doron Chen and Sivan Toledo's <a href="http://etna.math.kent.edu/vol.16.2003/pp30-49.dir/pp30-49.pdf">experiments</a>
+with the original Vaidya support graph preconditioners.
+<p>
+<li> Erik Boman and Bruce Hendrickson,
+<a href="http://www.sandia.gov/~bahendr/papers/support-theory.pdf">
+Support theory for preconditioning</a>.
+A very clean linear algebraic framework for combinatorial preconditioning.
+<p>
+<li> Erik Boman, Doron Chen, Bruce Hendrickson, and Sivan Toledo,
+<a href="http://onlinelibrary.wiley.com/doi/10.1002/nla.343/abstract">
+Maximum-weight-basis preconditioners</a>.
+Extends support theory to factor-width-2 (i.e. symmetric diagonally dominant) matrices.
+<p>
+<li>Dan Spielman and Shang-Hua Teng,
+<a href="http://arxiv.org/abs/cs.NA/0607105">
+Nearly-linear time algorithms for preconditioning and solving symmetric, diagonally dominant linear systems</a>.
+An elaborate and beautiful theoretical result; the work of teasing out a practical method is still going on.
+<p>
+<li>Ioannis Koutis, Gary L. Miller and Richard Peng,
+<a href="http://arxiv.org/abs/1003.2958">
+Approaching optimality for solving SDD systems</a>.
+A large step toward making the Spielman-Teng approach practical.
+<p>
+<li>
+Koutis, Miller, and Tolliver,
+<a href="http://www.cs.cmu.edu/~jkoutis/papers/cviu_preprint.pdf">
+Combinatorial preconditioners and multilevel solvers
+for problems in computer vision and image processing</a>.
+Implementation and experiments with a combinatorial multigrid method (which they call CMG) 
+that uses some of the ideas in Spielman/Teng and Koutis/Miller/Peng.
+<p>
+<li>
+Jon Kelner, Lorenzo Orecchia, Aaron Sidford, and Allen Zhu.
+<a href="http://arxiv.org/abs/1301.6628">
+A simple, combinatorial algorithm for solving SDD systems in nearly-linear time</a>.
+A strikingly simple method (not preconditioned CG) that uses some ideas from support theory.
+<p>
+<li>
+Oren Livne and Achi Brandt.
+<a href="http://epubs.siam.org/doi/abs/10.1137/110843563">
+Lean algebraic multigrid (LAMG): Fast graph Laplacian linear solver</a>.
+Using multigrid ideas for Laplacian linear systems.
+<p>
+<li>
+Seymour Parter.
+<a href="http://epubs.siam.org/doi/abs/10.1137/1003021">
+The use of linear graphs in Gauss elimination</a>.
+The classic 1961 paper that first modeled Gaussian elimination as a process 
+on graphs, and proved that trees can be factored by GE without fill.
+<p>
+
+</ul>
+
+<p>
+<u><b>Software</b></u>
+<p>
+<ul>
+<li>
+<a href="http://www.cise.ufl.edu/research/sparse/CSparse/">CSparse</a>,
+a comprehensive library of C sparse matrix routines by Tim Davis that
+can be used either standalone or with Matlab.
+<p>
+<li>
+<a href="http://www.tau.ac.il/~stoledo/taucs/">TAUCS</a>, 
+a library of software by Sivan Toledo's group
+at Tel-Aviv that contains direct solvers and many different 
+preconditioners, including several support-graph preconditioners.
+<p>
+<li>
+<a href="https://www.cs.purdue.edu/homes/dgleich/packages/matlab_bgl">MatlabBGL</a>,
+a package of Matlab graph routines by David Gleich that uses the Boost Graph Library.
+<p>
+<li>
+<a href="http://www.cerfacs.fr/algor/Softs/MESHPART">Meshpart</a>,
+a somewhat older package of Matlab graph routines that I tend to use for demos because
+I know it pretty well :).
+<p>
+<li>
+<a href="http://www.sandia.gov/~tgkolda/feastpack">BTER and Feastpack</a>,
+a library by Kolda, Pinar, et al. that includes a good generator for random graphs
+with specified degree distribution and clustering behavior.
+</ul>
+<p>
+
+<u><b>Related courses elsewhere and elsewhen</b></u>
+<p>
+<ul>
+
+<li> Dan Spielman's course at Yale:
+"<a href="http://www.cs.yale.edu/homes/spielman/561/">Spectral Graph Theory</a>".  
+This is the pioneering course on which I'm basing the 
+theoretical parts of CS 290H.  Dan's online lecture
+notes are terrific.
+<p>
+
+<li> Gary Miller's course at Carnegie-Mellon:
+"<a href="http://www.cs.cmu.edu/~15859n/schedule.html">Spectral Graph Theory and the Laplacian Paradigm</a>".
+A great mixture of theory and practice, aimed at goals similar to ours.
+<p>
+
+<li>Luca Trevisan's course at Stanford:
+"<a href="http://theory.stanford.edu/~trevisan/cs359g/">Graph Partitioning and Expanders</a>".  
+This course covers several applications of spectral graph theory
+from a very theoretical (i.e. STOC/FOCS conference) point of view.
+Luca's online lecture notes are excellent.
+<p>
+
+<li>Simons Institute fall 2014 program on
+"<a href="http://simons.berkeley.edu/programs/spectral2014">Algorithmic Spectral Graph Theory</a>",
+including several workshops on topics related to CS290H.
+<p>
+
+<li> Aaron Clauset's course at Colorado:
+"<a href="http://tuvalu.santafe.edu/~aaronc/courses/5352/fall2013/">Network Analysis and Modeling</a>".
+This course isn't about graph Laplacians, but it has lots of good
+material (and lecture notes) about using graphs to model and
+analyze social and biological phenomena.
+
+</ul>
+
+</html>
