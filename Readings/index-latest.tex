@@ -20,8 +20,9 @@
 \newcommand{\pinv}{^{\dagger}}          % pseudoinverse
 \newcommand{\sdroot}{^{1/2}}            % semidefinite square root
 \newcommand{\pinvroot}{^{\dagger/2}}    % square root of pseudoinverse
-\newcommand{\Real}{\mathbb{R}}      % real numbers
-\newcommand{\krylov}{\mathcal{K}}   % Krylov subspace
+\newcommand{\Real}{\mathbb{R}}          % real numbers
+\newcommand{\krylov}{\mathcal{K}}       % Krylov subspace
+\newcommand{\Tr}{\mbox{Tr}}             % trace of a matrix
 
 \topmargin 0in
 \textheight 7.9in
@@ -31,9 +32,9 @@
 
 \begin{document}
 
-\title{Index of Notation and Definitions}
+\title{Index of Notation, Definitions, and Theorems}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of May 26, 2021}
+\date{Version of May 27, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -46,6 +47,7 @@ This list gives the versions of notation, terminology, and definitions
 that we will use in CS 292F.
 I mostly follow the conventions of Dan Spielman's notes, 
 though I prefer not to use greek letters for vectors.
+It will also include some key theorems, without proofs.
 I will keep adding to this list during the quarter.
 
 \begin{enumerate}
@@ -228,6 +230,28 @@ with eigenvalues and eigenvectors as in~(\ref{symeig}) is the matrix
 $$A\sdroot = \sum_{i=1}^n \lambda_i^{1/2} w_iw_i^T.$$
 We write the psd square root of~$A\pinv$ as 
 $$A\pinvroot = \sum_{\lambda_i\ne 0} \lambda_i^{-1/2} w_iw_i^T.$$
+
+\item{\bf Trace of a matrix}.
+The trace of a square matrix is the sum of its eigenvalues:
+$$\Tr(A) = \sum_{i=1}^n \lambda_i.$$
+Properties of the trace include:
+
+\begin{itemize}
+
+\item The trace is equal to the sum of the diagonal elements,
+$$\Tr(A) = \sum_{i=1}^n A(i,i).$$
+
+\item $\Tr(A+B) = \Tr(A)+\Tr(B)$.
+
+\item $\Tr(AB) = \Tr(BA)$.
+
+\item If $x$ is any vector, $\Tr(Axx^T) = x^TAx$.
+
+\item The trace of the Laplacian of an uweighted graph is twice the
+number of edges in the graph. The trace of the Laplacian of a weighted
+graph~(\ref{wgraph}) is twice the sum of the edge weights.
+
+\end{itemize}
 
 \item{\bf Rayleigh quotient}.
 The Rayleigh quotient of a nonzero vector $x$ and a matrix $A$ is
@@ -775,10 +799,10 @@ matrix (see Shewchuk for details).
 Each iteration performs one matrix-vector multiplication with~$A$
 and some vector arithmetic, taking $O(n+m)$~time per iteration
 if $A$~has $m$~nonzeros.
-The relative error in the approximate solution~$x_j$ is bounded by
-$$\frac{\|x_j-x\|_A}{\|x\|_A} < \epsilon$$
+The relative error in the approximate solution~$x_t$ is bounded by
+$$\frac{\|x_t-x\|_A}{\|x\|_A} < \epsilon$$
 after 
-$$j = O(\sqrt{\kappa(A)}\,\log(1/\epsilon))$$
+$$t = O(\sqrt{\kappa(A)}\,\log(1/\epsilon))$$
 iterations (in exact arithmetic), 
 where $\kappa(A)=\lambda_n/\lambda_1$ is the condition number of~$A$
 and $\|v\|_A = (v^TAv)^{1/2}$ is the $A$-norm.
@@ -786,6 +810,17 @@ With some care, CG can also be used for a positive semidefinite
 matrix whose null space is known, e.g.\ a weighted graph Laplacian.
 In that case, 
 the convergence bound uses the finite condition number~$\kappa_f(A)$.
+
+\item\label{evalcluster}
+When some of the eigenvalues of~$A$ are clustered together, 
+better bounds than $O(\sqrt{\kappa_f(A)}\,\log(1/\epsilon))$
+may hold on the number of CG iterations to convergence.
+For example, if all but $k$ of the nonzero eigenvalues are
+contained in a range $a\le\lambda_i\le b$, CG will converge to
+$$\frac{\|x_t-x\|_A}{\|x\|_A} < \epsilon$$
+after at most
+$$t = k + O(\sqrt{b/a}\,\log(1/\epsilon))$$
+iterations (in exact arithmetic).
 
 \item{\bf Preconditioned conjugate gradient}.\label{pcg} 
 The preconditioned conjugate gradient algorithm (or PCG)
@@ -798,15 +833,22 @@ Matrix~$B$ is called a {\em preconditioner} for~$A$,
 and may or may not be formed explicitly.
 A good preconditioner satisfies two criteria:
 \begin{itemize}
-\item It should be ``easy'' to solve the linear system $By=z$ for $y$.
+\item It is easier to solve linear systems with $B$ than with $A$.
 \item The condition number 
 $\kappa(B^{-1/2}AB^{-1/2}) = \kappa(AB^{-1}) = \kappa(A,B)$
-should be smaller than $\kappa(A)$.
+is smaller than $\kappa(A)$.
 \end{itemize}
 With some care, PCG can also be used with positive semidefinite
 matrices $A$ and~$B$ if they have the same null space.
 In that case, 
 the relevant condition number is the finite condition number~$\kappa_f(A,B)$.
+
+\item{\bf Trace-based bounds on CG}.
+A consequence of~(\ref{evalcluster}) is the following bound on
+conjugate gradient iterations for a matrix (or preconditioned matrix)~$A$
+whose smallest nonzero eigenvalue is known to be at least~1.
+In that case the number of iterations to $\epsilon$-convergence
+is at most $O(\Tr(A)^{1/3}\log(1/\epsilon))$.
 
 \item {\bf Semidefinite order (Loewner order)}.
 If $A$ is a symmetric matrix, 
@@ -823,15 +865,13 @@ Here are some properties of this order.
 
 \begin{itemize}
 
-\item Loewner order is a partial order;
+\item Loewner order is only a partial order;
 there are matrices $A\succeq 0$ and~$B\succeq 0$
 for which neither $A\preceq B$ nor~$B\preceq A$.
 
 \item If $A\preceq B$ and $B\preceq C$, then $A\preceq C$.
 
 \item If $A\preceq B$ and $B\preceq A$, then $A=B$.
-
-\item $A\preceq B$ iff $x^TAx \leq x^TBx$ for all vectors~$x$.
 
 \item $A\preceq B$ iff $x^TAx \leq x^TBx$ for all vectors~$x$.
 
@@ -924,12 +964,12 @@ for the length-one path between its endpoints,
 but~$e$ does not induce a fundamental cycle.
 
 \item{\bf Random spanning tree theorem}.\label{rtree}
-If we choose a spanning tree~T of connected~G at random with probability
-proportional to the product of its edge weights, 
+If we choose a spanning tree~$T$ of connected~$G$ at random 
+with probability proportional to the product of its edge weights, 
 then for every edge~$e\in G$,
 $$\Pr[e\in T] = \ell_e.$$
 It follows that the sum of the leverage scores is $n-1$,
-the number of edges in any spanning tree.
+the number of edges in a spanning tree.
 
 \item{\bf Spectral sparsifiers}.
 Let $G$ be a connected weighted Laplacian.
@@ -940,33 +980,37 @@ by the inverse of its probability of being chosen.
 This inflation makes the expected value of~$H$ (as a matrix) equal to~$G$.
 
 If we take the constant of proportionality to be $\tau=3.5\ln n/\epsilon^2$,
-we choose edge~$e$ with probability~$\tau\ell_e$, 
-and if $e$ is chosen then its new weight in~$H$ 
+we choose edge~$e$ with probability~$\tau\ell_e$.
+If $e$ is chosen then its new weight in~$H$ 
 becomes~$c(e)/\tau\ell_e = 1/\tau\Reff(e)$.
 It is a theorem that (with high probability) this subgraph~$H$ 
 is an $\epsilon$-approximation of~$G$ and has $O(n\log n/\epsilon^2)$ edges.
 A more complicated construction yields an $\epsilon$-approximation
-with only $O(n)$ edges.
+with only $O(n/\epsilon^2)$ edges.
 
 \item{\bf Stretch of an edge}.
 If $T$ is a spanning tree of~$G$ 
 (connected Laplacians with edge weights $c(e)$),
 the stretch of an edge~$e$ of~$G$ is the following sum along the
-path $P(e)$ between its endpoints:
+tree path $P(e)$ between its endpoints:
 $$\stretchh(e) = c(e)\sum_{f\in P(e)}\frac{1}{c(f)}.$$
 If we interpret $G$ and~$T$ as resistive networks
 with resistances $r(e) = 1/c(e)$, 
 then the stretch of edge~$e$ is just~$r(P(e))/r(e)$,
-which is the effective resistance in~$T$ between the endpoints of~$e$,
-$$\stretchh(a,b) = \Reff_T(a,b).$$
+which is ratio of the effective resistance in $T$ to the
+edge resistance in~$G$ between the endpoints of~$e$,
+$$\stretchh(a,b) = \frac{\Reff_T(a,b)}{r_G(a,b)}.$$
+We could use the latter equality as the definition of stretch
+for an arbitrary subgraph, not necessarily a tree.
 
 \item{\bf Stretch of a tree}.
 The stretch of a spanning tree~$T$ of~$G$ 
 (connected weighted Laplacians)
 is the total stretch of the edges of~$G$ (not the edges of~$T$),
-$$\stretchh_G(T)=\sum_{e\in G}\stretchh(e).$$
-It is straightforward to show that $\stretchh_G(T)$ is equal to
-the trace (or sum of the eigenvalues) of the matrix $T\pinv G$.
+$$\stretchh_G(T)=\sum_{e\in G}\stretchh(e)=\Tr(T\pinv G).$$
+The second equality above states that the total stretch is equal to 
+the trace (or sum of eigenvalues) of the preconditioned matrix,
+which is straightforward to verify.
 
 \item{\bf Low-stretch trees}.
 A nontrivial theorem is that every weighted graph~$G$ 
@@ -976,6 +1020,16 @@ $$\stretchh_G(T)=O(m\log n\log\log n),$$
 which can be found in $O(m\log n\log\log n)$ time.
 It is an open problem whether the stretch can be improved
 to $O(m\log n)$ in general, which would be best possible.
+
+\item{\bf Preconditioning by trees}.
+When a low-stretch spanning tree is used to precondition 
+a connected Laplacian linear system, the number of iterations to
+$\epsilon$-convergence is $\tilde{O}(m^{1/3}\log(1/\epsilon))$ and the running
+time is $\tilde{O}(m^{4/3}\log(1/\epsilon))$.
+Here $m$ is the number of edges in the graph, 
+and $\tilde{O}()$ hides factors polynomial in~$\log n$.
+
+
 
 \end{enumerate}
 
