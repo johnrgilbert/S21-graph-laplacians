@@ -17,7 +17,9 @@
 \newcommand{\congestion}{\mbox{congestion}}
 \newcommand{\stretchh}{\mbox{stretch}}
 \newcommand{\Reff}{R^{\mbox{\scriptsize eff}}}  % effective resistance
-\newcommand{\pinv}{^{\dagger}}                  % pseudoinverse
+\newcommand{\pinv}{^{\dagger}}          % pseudoinverse
+\newcommand{\sdroot}{^{1/2}}            % semidefinite square root
+\newcommand{\pinvroot}{^{\dagger/2}}    % square root of pseudoinverse
 \newcommand{\Real}{\mathbb{R}}      % real numbers
 \newcommand{\krylov}{\mathcal{K}}   % Krylov subspace
 
@@ -31,7 +33,7 @@
 
 \title{Index of Notation and Definitions}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of May 11, 2021}
+\date{Version of May 26, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -223,9 +225,9 @@ $$A\pinv A x = AA\pinv x = x.$$
 \item{\bf Square root}.
 The positive semidefinite square root of a positive semidefinite matrix~$A$
 with eigenvalues and eigenvectors as in~(\ref{symeig}) is the matrix
-$$A^{1/2} = \sum_{i=1}^n \lambda_i^{1/2} w_iw_i^T.$$
+$$A\sdroot = \sum_{i=1}^n \lambda_i^{1/2} w_iw_i^T.$$
 We write the psd square root of~$A\pinv$ as 
-$$A^{\dagger/2} = \sum_{\lambda_i\ne 0} \lambda_i^{-1/2} w_iw_i^T.$$
+$$A\pinvroot = \sum_{\lambda_i\ne 0} \lambda_i^{-1/2} w_iw_i^T.$$
 
 \item{\bf Rayleigh quotient}.
 The Rayleigh quotient of a nonzero vector $x$ and a matrix $A$ is
@@ -305,8 +307,7 @@ written $\phi_G$, is the smallest conductance of any nonempty
 proper subset of vertices,
 $$\phi_G = \min_{S\subset V}\phi(S).$$
 Note that $\phi_G=0$ iff $G$ is not connected.
-(``Conductance'' has a different meaning in resistive networks, as we'll see later.)
-%; see~(\ref{resistive}) below.)
+(``Conductance'' has a different meaning in resistive networks, as we'll see later.); see~(\ref{resistive}) below.)
 
 \item\label{nlap}{\bf Normalized Laplacian}.
 The normalized Laplacian of graph~$G$ is 
@@ -333,7 +334,7 @@ it has 0 as an eigenvalue with multiplicity
 equal to the number of connected components
 of~$G$.  In general however $N$'s eigenvalues
 and eigenvectors are different from $L$'s.
-We write $0=\nu_1\le\nu_2\le\cdots\le\nu_n$
+We write $0=\nu_1\leq \nu_2\leq \cdots\leq \nu_n$
 for the eigenvalues of~$N$.
 The eigenvector corresponding to~$\nu_1$ is
 not the constant vector, but the vector~$d^{1/2}$
@@ -445,23 +446,6 @@ On the other hand, the normalized Laplacian of $\alpha G$ is the same as the
 normalized Laplacian of~$G$, 
 $$N_{\alpha G} = N_G,$$ 
 since the normalization wipes out the factor of~$\alpha$.
-
-\item {\bf Semidefinite ordering}.
-If $A$ is a matrix, $A\succeq0$ means that $A$ is symmetric and positive semidefinite.
-Thus $L\succeq 0$ for any Laplacian~$L$.
-If $A$ and~$B$ are matrices, $A\succeq B$ means $A-B\succeq 0$.
-If $G$ and~$H$ are graphs or weighted graphs, $G\succeq H$ means $L_G\succeq L_H$
-(note that we are using the ordinary, un-normalized Laplacian here).
-Then $G\succeq H$ if and only if $x^TL_Gx \geq x^TL_Hx$ for all vectors~$x$.
-For matrices $A \succeq 0$ and $B \succeq 0$,
-$A\succeq B$ implies $\lambda_k(A) \geq \lambda_k(B)$ for all~$k$,
-but the converse is false.
-Also, $A \succeq B$ implies $B\pinv \succeq A\pinv$.
-
-\item {\bf Graph approximation}.
-For any constant $\alpha\geq 1$, (weighted) graph~$H$ is an {\em $\alpha$-approximation} 
-of (weighted)~graph $G$ if $\alpha H \succeq G \succeq H/\alpha$.
-This definition actually applies to all symmetric matrices, not just graph Laplacians.
 
 \item{\bf Krylov subspace}.
 The $t$-dimensional Krylov subspace based on a square matrix~$A$ 
@@ -674,11 +658,6 @@ is the vector whose $k$'th element is equal to 1 when $k=a$,
 equal to $-1$ when $k=b$, and equal to zero elsewhere.
 We write $\Reff_G(a,b)$ if the graph is not clear from context.
 
-\item
-Let $G$ and $H$ be resistive networks on the same number of vertices.
-If $H\succeq G$, then for every pair of vertices $a$,~$b$ we have
-$\Reff_G(a,b) \geq \Reff_H(a,b)$.
-
 \item\label{GE}{\bf Symmetric Gaussian elimination}.
 If $L$ is the Laplacian of a connected weighted graph~$G$ 
 with $n>1$~vertices,
@@ -769,29 +748,44 @@ then $p(A)b = x$.
 Therefore $x$ is in the Krylov subspace $\krylov_{t}(A,b)$, 
 where $t$ is the number of {\em distinct} eigenvalues of~$A$.
 
-\item
-The {\em condition number} of a square matrix~$A$ is 
+\item{\bf Condition number}.
+The condition number of a square matrix~$A$ is 
 $\kappa(A)=\|A\|\,\|A^{-1}\|$, interpreted as~$\infty$
 if $A$ is singular.  If $A$ is symmetric and positive 
 definite, $\kappa(A) = \lambda_n/\lambda_1$ is the ratio
 of the extreme eigenvalues.
 
+\item{\bf Finite condition number}.
+For a symmetric positive semidefinite matrix~$A$,
+the finite condition number
+$\kappa_f(A)=\lambda_n/\lambda_k$, where $\lambda_k$ is
+the smallest nonzero eigenvalue.
+
+\item
+Let~$A$ and~$B$ be symmetric positive semidefinite matrices
+with the same null space (e.g., weighted Laplacians of two
+connected graphs on the same vertices).
+The {\em finite condition number}~$\kappa_f(A,B)$ is $\kappa_f(AB\pinv)$.
+Note that $\kappa_f(A,B) = \kappa_f(B,A)$.
+
 \item{\bf Conjugate gradient}.\label{cg} 
 The conjugate gradient algorithm (or CG)
-solves $Ax=b$, where $A\succ 0$ is a symmetric, positive definite
+solves $Ax=b$, where $A$ is a symmetric, positive definite
 matrix (see Shewchuk for details).
 Each iteration performs one matrix-vector multiplication with~$A$
 and some vector arithmetic, taking $O(n+m)$~time per iteration
 if $A$~has $m$~nonzeros.
 The relative error in the approximate solution~$x_j$ is bounded by
-$$\frac{||x_j-x||_A}{||x||_A} < \epsilon$$
+$$\frac{\|x_j-x\|_A}{\|x\|_A} < \epsilon$$
 after 
 $$j = O(\sqrt{\kappa(A)}\,\log(1/\epsilon))$$
 iterations (in exact arithmetic), 
 where $\kappa(A)=\lambda_n/\lambda_1$ is the condition number of~$A$
-and $||v||_A = (v^TAv)^{1/2}$ is the $A$-norm.
+and $\|v\|_A = (v^TAv)^{1/2}$ is the $A$-norm.
 With some care, CG can also be used for a positive semidefinite
 matrix whose null space is known, e.g.\ a weighted graph Laplacian.
+In that case, 
+the convergence bound uses the finite condition number~$\kappa_f(A)$.
 
 \item{\bf Preconditioned conjugate gradient}.\label{pcg} 
 The preconditioned conjugate gradient algorithm (or PCG)
@@ -805,38 +799,183 @@ and may or may not be formed explicitly.
 A good preconditioner satisfies two criteria:
 \begin{itemize}
 \item It should be ``easy'' to solve the linear system $By=z$ for $y$.
-\item The condition number $\kappa(B^{-1/2}AB^{-1/2}) = \kappa(AB^{-1})$ 
+\item The condition number 
+$\kappa(B^{-1/2}AB^{-1/2}) = \kappa(AB^{-1}) = \kappa(A,B)$
 should be smaller than $\kappa(A)$.
 \end{itemize}
 With some care, PCG can also be used with positive semidefinite
 matrices $A$ and~$B$ if they have the same null space.
+In that case, 
+the relevant condition number is the finite condition number~$\kappa_f(A,B)$.
+
+\item {\bf Semidefinite order (Loewner order)}.
+If $A$ is a symmetric matrix, 
+$A\succeq 0$ means that $A$ is positive semidefinite 
+(all eigenvalues of~$A$ are non-negative) and
+$A\succ 0$ means that $A$ is positive definite
+(all eigenvalues of~$A$ are positive).
+If $A$ and~$B$ are symmetric matrices, 
+$A\preceq B$ means $B-A\succeq 0$ and
+$A\prec B$ means $B-A\succ 0$.
+If $G$ and~$H$ are graphs or weighted graphs, 
+$G\preceq H$ means $L_G\preceq L_H$.
+Here are some properties of this order.
+
+\begin{itemize}
+
+\item Loewner order is a partial order;
+there are matrices $A\succeq 0$ and~$B\succeq 0$
+for which neither $A\preceq B$ nor~$B\preceq A$.
+
+\item If $A\preceq B$ and $B\preceq C$, then $A\preceq C$.
+
+\item If $A\preceq B$ and $B\preceq A$, then $A=B$.
+
+\item $A\preceq B$ iff $x^TAx \leq x^TBx$ for all vectors~$x$.
+
+\item $A\preceq B$ iff $x^TAx \leq x^TBx$ for all vectors~$x$.
+
+\item $A\preceq B$ implies $\lambda_i(A) \leq \lambda_i(B)$
+for all $1\leq i\leq n$. The converse is false.
+
+\item $A\preceq B$ implies $CAC^T \preceq CBC^T$ for all matrices~$C$, 
+including non-symmetric and non-square matrices. The converse holds
+for nonsingular matrices~$C$.
+
+\item If $0\preceq A\preceq B$, then $B\pinvroot A B\pinvroot \preceq I$.
+
+\item If $0\preceq A\preceq B$ and $A$ and $B$ have the same null space,
+then $B\pinv\preceq A\pinv$.
 
 \item
-For a symmetric positive semidefinite matrix~$A$,
-the {\em finite condition number} is 
-$\kappa_f(A)=\lambda_n/\lambda_k$, where $\lambda_k$ is
-the smallest nonzero eigenvalue.
-For example, if~$L$ is the Laplacian of a connected graph,
-$\kappa_f(L)=\lambda_n/\lambda_2$ is the relevant condition number
-for the convergence of conjugate gradient.
+Let $G$ and $H$ be resistive networks on the same number of vertices.
+If $H\preceq G$, then for every pair of vertices $a$,~$b$ we have
+$\Reff_G(a,b) \leq \Reff_H(a,b)$.
 
 \item
-Let~$A$ and~$B$ be symmetric positive semidefinite matrices
-with the same null space (e.g., weighted Laplacians of two
-connected graphs on the same vertices).
-The {\em finite condition number}~$\kappa_f(A,B)$ is $\kappa_f(AB\pinv)$,
-which is the relevant condition number for the convergence of conjugate
-gradient on~$Ax=b$ with preconditioner~$B$.
-Note that $\kappa_f(A,B) = \kappa_f(B,A)$.
-
-\item
-Let~$A$ and~$B$ be two symmetric positive semidefinite matrices
-with the same null space.
-If $\alpha B \preceq A \preceq \beta B$,
+If~$A\succeq 0$ and~$B\succeq 0$ have the same null space,
+and $\alpha B \preceq A \preceq \beta B$,
 then $\alpha \leq \lambda \leq \beta$
 for every nonzero eigenvalue~$\lambda$ of~$AB\pinv$,
 and therefore $\kappa_f(A,B) \leq \beta/\alpha$.
 
+\end{itemize}
+
+\item {\bf Graph approximation}.
+For any constant $\alpha\geq 1$, 
+(weighted) graph~$H$ is an {\em $\epsilon$-approximation} 
+of (weighted)~graph $G$ if $(1-\epsilon) H \preceq G \preceq H/(1+\epsilon)$.
+This definition actually applies to all symmetric matrices, 
+not just graph Laplacians.
+We say loosely that~$G$ and~$H$ are $\epsilon$-approximations of each other,
+though the values of~$\epsilon$ are slightly different in each direction.
+
+This is a powerful statement.
+If $G$ and~$H$ are $\epsilon$-approximations: 
+
+\begin{itemize}
+
+\item Their eigenvalues are similar: 
+$(1-\epsilon)\lambda_i(H)\leq\lambda_i(G)\leq(1+\epsilon)\lambda_i(H)$
+for all~$i$.
+
+\item They operate similarly on vectors:
+$\|Gx-Hx\|/(\|G\|\,\|x\|) \leq \epsilon$.
+
+\item Solutions of linear systems are similar:
+$\|G\pinv b - H\pinv b\|/(\|G\pinv\|\,\|b\|) \leq \epsilon/(1-\epsilon)$.
+
+\item They are good preconditioners for each other:
+$\kappa_f(G,H) = 1 + O(\epsilon)$.
+
+\item Their effective resistances $\Reff_G(a,b)$ and $\Reff_H(a,b)$
+are similar for every pair $a$, $b$ of vertices.
+
+\item All their weighted cuts are similar, 
+since $\ones_A^TG\pinv\ones_A$ is close to $\ones_A^TH\pinv\ones_A$ 
+for every set~$A$ of vertices.
+
+\end{itemize}
+
+\item{\bf Leverage score}.
+If $G$ is a graph with edge weights~$c(e) = c(a,b)$, 
+the leverage score of edge~$e = (a,b)$ is
+$$\ell_e=c(a,b)\Reff(a,b).$$
+Since, in a resistive network, 
+$c(e)$ is the inverse of the resistance  of edge $e$,
+the leverage score is the ratio of the effective resistance
+across the edge to the edge resistance. 
+Therefore $0\leq\ell_e\leq 1$ for every edge.
+If cutting edge~$e$ disconnects the graph, then $\ell_e=1$.
+The sum of the leverage scores of all edges is $n-1$;
+see~(\ref{rtree}).
+
+\item{\bf Spanning trees, fundamental cycles}.\label{stree}
+If $G$ is a connected graph (or a connected weighted Laplacian),
+a spanning tree of~$G$ is a subgraph~$T$ of~$G$ that has
+no cycles (a tree) and includes all the vertices of~$G$ (spanning).
+Unless otherwise stated, 
+edges of~$T$ have the same weight in~$T$ as they have in~$G$.
+Each edge~$e=(a,b)$ that is in~$G$ but not in~$T$ induces a
+fundamental cycle consisting of~$e$ and the unique path~$P(e)$
+in~$T$ between its endpoints~$a$ and~$b$.
+For an edge $e=(a,b)$ of~$T$, we write~$P(e)=(a,b)$ 
+for the length-one path between its endpoints, 
+but~$e$ does not induce a fundamental cycle.
+
+\item{\bf Random spanning tree theorem}.\label{rtree}
+If we choose a spanning tree~T of connected~G at random with probability
+proportional to the product of its edge weights, 
+then for every edge~$e\in G$,
+$$\Pr[e\in T] = \ell_e.$$
+It follows that the sum of the leverage scores is $n-1$,
+the number of edges in any spanning tree.
+
+\item{\bf Spectral sparsifiers}.
+Let $G$ be a connected weighted Laplacian.
+Select a subgraph~$H$ at random by choosing each edge
+of~$G$ independently with probability proportional to its leverage score.
+Then inflate the weights of each edge of~$H$ 
+by the inverse of its probability of being chosen.
+This inflation makes the expected value of~$H$ (as a matrix) equal to~$G$.
+
+If we take the constant of proportionality to be $\tau=3.5\ln n/\epsilon^2$,
+we choose edge~$e$ with probability~$\tau\ell_e$, 
+and if $e$ is chosen then its new weight in~$H$ 
+becomes~$c(e)/\tau\ell_e = 1/\tau\Reff(e)$.
+It is a theorem that (with high probability) this subgraph~$H$ 
+is an $\epsilon$-approximation of~$G$ and has $O(n\log n/\epsilon^2)$ edges.
+A more complicated construction yields an $\epsilon$-approximation
+with only $O(n)$ edges.
+
+\item{\bf Stretch of an edge}.
+If $T$ is a spanning tree of~$G$ 
+(connected Laplacians with edge weights $c(e)$),
+the stretch of an edge~$e$ of~$G$ is the following sum along the
+path $P(e)$ between its endpoints:
+$$\stretchh(e) = c(e)\sum_{f\in P(e)}\frac{1}{c(f)}.$$
+If we interpret $G$ and~$T$ as resistive networks
+with resistances $r(e) = 1/c(e)$, 
+then the stretch of edge~$e$ is just~$r(P(e))/r(e)$,
+which is the effective resistance in~$T$ between the endpoints of~$e$,
+$$\stretchh(a,b) = \Reff_T(a,b).$$
+
+\item{\bf Stretch of a tree}.
+The stretch of a spanning tree~$T$ of~$G$ 
+(connected weighted Laplacians)
+is the total stretch of the edges of~$G$ (not the edges of~$T$),
+$$\stretchh_G(T)=\sum_{e\in G}\stretchh(e).$$
+It is straightforward to show that $\stretchh_G(T)$ is equal to
+the trace (or sum of the eigenvalues) of the matrix $T\pinv G$.
+
+\item{\bf Low-stretch trees}.
+A nontrivial theorem is that every weighted graph~$G$ 
+with $n$~vertices and $m$~edges
+has a spanning tree~$T$ with nearly linear stretch,
+$$\stretchh_G(T)=O(m\log n\log\log n),$$
+which can be found in $O(m\log n\log\log n)$ time.
+It is an open problem whether the stretch can be improved
+to $O(m\log n)$ in general, which would be best possible.
 
 \end{enumerate}
 
