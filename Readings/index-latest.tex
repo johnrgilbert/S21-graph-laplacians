@@ -34,7 +34,7 @@
 
 \title{Index of Notation, Definitions, and Theorems}
 \author{CS 292F: Graph Laplacians and Spectra}
-\date{Version of May 27, 2021}
+\date{Version of June 1, 2021}
 \maketitle
 
 There is a lot of variation in terminology and notation in
@@ -1017,19 +1017,58 @@ A nontrivial theorem is that every weighted graph~$G$
 with $n$~vertices and $m$~edges
 has a spanning tree~$T$ with nearly linear stretch,
 $$\stretchh_G(T)=O(m\log n\log\log n),$$
-which can be found in $O(m\log n\log\log n)$ time.
+which can be found in $O(m\log n\log\log n)$ (expected) time.
 It is an open problem whether the stretch can be improved
 to $O(m\log n)$ in general, which would be best possible.
 
 \item{\bf Preconditioning by trees}.
 When a low-stretch spanning tree is used to precondition 
 a connected Laplacian linear system, the number of iterations to
-$\epsilon$-convergence is $\tilde{O}(m^{1/3}\log(1/\epsilon))$ and the running
-time is $\tilde{O}(m^{4/3}\log(1/\epsilon))$.
+$\epsilon$-convergence is $\tilde{O}(m^{1/3}\log(1/\epsilon))$ 
+and the running time is $\tilde{O}(m^{4/3}\log(1/\epsilon))$.
 Here $m$ is the number of edges in the graph, 
 and $\tilde{O}()$ hides factors polynomial in~$\log n$.
 
+\item {\bf Spielman-Teng solver}.
+In a series of papers published from 2004 to~2014,
+Spielman and Teng used spectral sparsification and
+recursive preconditioning to give the first algorithm that
+solves Laplacian linear systems in time $\tilde{O}(m\log(1/\epsilon))$.
 
+\item {\bf Incremental sparsifiers}.
+Koutis, Miller, and Peng (2010) presented a randomized algorithm that,
+given a weighted graph~$G$ and a constant~$3\leq\kappa<3m$, 
+produces a so-called incremental sparsifier, 
+which is a graph~$H$ with $n-1+ \tilde{O}(m/\kappa)$ edges 
+for which $G\preceq H\preceq \kappa G$.
+The algorithm samples edges of~$G$ with probability proportional 
+to their stretch relative to a low-stretch spanning tree.
+It runs in time~$\tilde{O}(m)$.
+
+
+\item {\bf KMP solver}.
+Koutis, Miller, and Peng (2010) used incremental sparsifiers and
+recursive preconditioning to give an algorithm that solves Laplacian 
+linear systems in time~$\tilde{O}(m\log(1/\epsilon))$.
+The KMP algorithm is closely related to the Spielman-Teng algorithm,
+but is simpler and also faster;
+in S-T the $\tilde{O}()$ hides a high power of~$\log n$,
+while in KMP it hides only $\log^2 n$ times a power of~$\log\log n$.
+
+\item {\bf Other fast solvers.}
+Since KMP, several other $\tilde{O}(m\log(1/\epsilon))$-time
+Laplacian solvers have been invented, 
+and the field is still seeing rapid development.
+Two that are particularly simple in structure are
+Kelner et al.'s 2013 algorithm that performs random Kaczmarz 
+projections against fundamental cycles with respect to a
+low-stretch tree,
+and Kyng and Sachdeva's 2016 algorithm that produces an
+incomplete Cholesky factor by randomly sampling fill edges
+to keep at each elimination step.
+As of this writing, the asymptotically most efficient
+is due to Cohen et al.\ (2014) 
+and runs in time $O(m\log^{1/2}n\log\log^c n\log(1/\epsilon))$.
 
 \end{enumerate}
 
